@@ -108,7 +108,7 @@ bit_reverse_table256 =[
 ]
 
 def bit_reverse(byte_buff):
-	return [bit_reverse_table256[byte] for byte in byte_buff]
+	return bytes([bit_reverse_table256[byte] for byte in byte_buff])
 
 
 if __name__ == '__main__':
