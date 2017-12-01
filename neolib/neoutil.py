@@ -22,9 +22,9 @@ import json
 import sys
 import datetime
 
-
+from neolib.hexstr_util import *
 from logging import handlers
-
+from neolib.file_util import *
 #from neolib.general_import import *
 
 class Struct:
@@ -88,50 +88,32 @@ def getMapsFromArgs(argv):
 def get_struct_from_args(argv):
 	return Struct(**get_maps_from_args(argv))
 
-
-def HexString2ByteArray(hexstr) :
-	return bytes.fromhex(hexstr)
-
-def ByteArray2HexString(bytes,sep="") :
-	return sep.join('{:02X}'.format(int(x)) for x in array.array('B', bytes))
-	#return sep.join('{:02X}'.format(ord(x)) for x in bytes)
-
-def HexString2Text(hexstr,enc="utf-8") :
-	return HexString2ByteArray(hexstr).decode(enc)
-
-def Text2HexString(str,enc="utf-8",sep="") :
-	return ByteArray2HexString(str.encode(enc),sep)
-
-
-
-
-def StrFromFile(filepath,enc='utf-8'):
-
-
-	fb = open(filepath,'rb')
-	rt = fb.read()
-	str = rt.decode(enc)
-	fb.close()
-	return str
-
-def StrToFile(str,filepath,enc='utf-8'):
-	fullpath = os.path.abspath(filepath)
-	dir_name = os.path.dirname(fullpath)
-	MakeDir(dir_name)
-
-	fb = open(filepath,'wb')
-	fb.write(str.encode(enc))
-	fb.close()
-
-
-def MakeDoubleListFromTxt(strtxt):
-	strmenu = StrFromFile(strtxt)
-	mapobj = map(lambda x: tuple(x.split('\t')), strmenu.split('\r\n'))
-	return list(filter(lambda x: len(x) > 1, mapobj))
-
-def MakeDir(path):
-	if not os.path.exists(path):
-		os.makedirs(path)
+#
+# def HexString2ByteArray(hexstr) :
+# 	return hexstr.
+#
+# def ByteArray2HexString(bytes,sep="") :
+# 	return sep.join('{:02X}'.format(int(x)) for x in array.array('B', bytes))
+# 	#return sep.join('{:02X}'.format(ord(x)) for x in bytes)
+#
+# def HexString2Text(hexstr,enc="utf-8") :
+# 	return HexString2ByteArray(hexstr).decode(enc)
+#
+# def Text2HexString(str,enc="utf-8",sep="") :
+# 	return ByteArray2HexString(str.encode(enc),sep)
+#
+#
+# def tobytes(in_data):
+# 	if type(in_data) == str:
+# 		return HexString2ByteArray(in_data)
+# 	if type(in_data) == bytes:
+# 		return in_data
+#
+# def tohexstr(in_data):
+# 	if type(in_data) == str:
+# 		return in_data
+# 	if types(in_data) == bytes:
+# 		return ByteArray2HexString(in_data)
 
 
 def deffilter(root,file):
