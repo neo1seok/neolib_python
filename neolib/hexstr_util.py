@@ -26,3 +26,9 @@ def tohexstr(in_data):
 		return in_data.replace(' ','')
 	if type(in_data) == bytes or type(in_data) == list:
 		return ByteArray2HexString(in_data)
+
+
+if __name__ == "__main__":
+	print(tohexstr(b'\x03\x04'))
+	print(tohexstr([3,5]))
+	pass
