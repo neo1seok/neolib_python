@@ -19,9 +19,10 @@ def tobytes(in_data):
 		return HexString2ByteArray(in_data)
 	if type(in_data) == bytes:
 		return in_data
-
+	if type(in_data) == list:
+		return bytes(in_data)
 def tohexstr(in_data):
 	if type(in_data) == str:
 		return in_data.replace(' ','')
-	if type(in_data) == bytes:
+	if type(in_data) == bytes or type(in_data) == list:
 		return ByteArray2HexString(in_data)

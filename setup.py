@@ -7,21 +7,21 @@ from distutils.core import setup
 setup(
     name = 'neolib',
     packages=['neolib',
+              'sample'
               #'neolib.compress',
 
         ],
     version = currentVersion,
     description = 'useful library 4 python developing',
     author = 'neo1seok',
-    author_email = '',
+    author_email = 'neo1seok@gmail.com',
     keywords = ['neolib', 'neo1seok'],
     classifiers = [
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
         "Natural Language :: English",
-        "License :: OSI Approved :: Apache Software License",
+        "License :: neo1seok licnese",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.3",
         "Programming Language :: Python :: 3.4",

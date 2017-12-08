@@ -69,13 +69,13 @@ def listarg2Map(list):
 
 def get_maps_from_args(argv):
 	length = len(argv)
-	print(argv)
+	#print(argv)
 
 	maps = {tmp[1:]: '' for tmp in argv if tmp.startswith('-')}
 
 	for key, val in maps.items():
 		idx = argv.index('-' + key)
-		print(idx)
+	#	print(idx)
 		if idx + 1 >= length: continue
 		if argv[idx + 1].startswith('-'): continue
 
@@ -267,26 +267,6 @@ def devide_by_unitsize(orgsize,unitsize):
 	if remain > 0:
 		list_inputsize_per_loop.append(remain)
 	return list_inputsize_per_loop
-
-
-def find_files(base_path,is_filter=lambda tuple_path,etc_param:True ,etc_param=None, conv_result = lambda tuplepath,etc_param:tuplepath):
-	'''
-	이 함수는 특정 패스 밑에 모든 파일을 리커시브하게 읽어가며
-	디텍트 하는 함수이다.
-	:param base_path:
-	base_path,path,dirs,filename, = tuple_path
-	:return:
-	'''
-	if base_path == '':
-		base_path =os.getcwd()
-
-	for path, dirs, files in os.walk(base_path):
-		path = path.replace('\\','/')
-		for tmpfile in files:
-			tuplepath = (base_path,path,dirs,tmpfile,)
-			if is_filter(tuplepath,etc_param):
-				ret = conv_result(tuplepath,etc_param)
-				yield ret
 
 
 

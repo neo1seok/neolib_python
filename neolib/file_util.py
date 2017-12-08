@@ -27,3 +27,26 @@ def MakeDoubleListFromTxt(strtxt):
 def MakeDir(path):
 	if not os.path.exists(path):
 		os.makedirs(path)
+
+
+def find_files(base_path,is_filter=lambda tuple_path,etc_param:True ,etc_param=None, conv_result = lambda tuplepath,etc_param:tuplepath):
+	'''
+	이 함수는 특정 패스 밑에 모든 파일을 리커시브하게 읽어가며
+	디텍트 하는 함수이다.
+	:param base_path:
+	base_path,path,dirs,filename, = tuple_path
+	:return:
+	'''
+	if base_path == '':
+		base_path =os.getcwd()
+
+	for path, dirs, files in os.walk(base_path):
+		#print(path, dirs, files)
+		path = path.replace('\\','/')
+		for tmpfile in files:
+			tuplepath = (base_path,path,dirs,tmpfile,)
+		#	print(is_filter,is_filter(tuplepath,etc_param))
+			if is_filter(tuplepath,etc_param):
+				ret = conv_result(tuplepath,etc_param)
+				yield ret
+

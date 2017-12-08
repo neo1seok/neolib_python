@@ -1,6 +1,8 @@
 from neolib import neoutil,neo_class
 from neolib.neoutil import *
 import hashlib
+import random
+
 def fit_size(src,unit_size):
 	real_size = len(src)
 	if real_size < unit_size:
@@ -9,10 +11,16 @@ def fit_size(src,unit_size):
 
 def sha256(bin_input):
 	m = hashlib.sha256()
-	m.update(bin_input)
+	m.update(tobytes(bin_input))
 	reshash = m.digest()
 
 	return reshash
+
+
+
+def getrandom(size):
+	return bytearray(random.getrandbits(8) for _ in range(size))
+
 
 def sha1(bin_input):
 	m = hashlib.sha1()
