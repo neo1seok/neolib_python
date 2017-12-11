@@ -1,11 +1,11 @@
-from neolib import neoutil,neo_class
-import sys
+#from neolib import neoutil,neo_class
+#import sys
 import time
-import neolib
-import http
-import  simplejson as json
+#import neolib
+#import http
+#import  json
 import socket
-import http.client
+#import http.client
 import logging
 import threading
 from logging import handlers
@@ -24,6 +24,8 @@ class NeoBASEServer():
 
 	def def_debug(self, fmt, *args):
 		print(fmt % (*args,))
+		pass
+
 	def init(self):
 		None
 
