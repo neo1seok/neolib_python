@@ -68,3 +68,6 @@ def make_map_lines_from_filled_lines(lines, keyindex):
 		maplist[key].append(line)
 	return  	maplist
 
+def view_simple_lines(lines):
+	for tmp in lines:
+		print(tmp)

@@ -25,18 +25,9 @@ import datetime
 from neolib.hexstr_util import *
 from logging import handlers
 from neolib.file_util import *
+from neolib import neo_class
+from neolib.neo_class import Struct
 #from neolib.general_import import *
-
-class Struct:
-	def __init__(self, **entries):
-		self.__dict__.update(entries)
-
-	def get_dict(self):
-		return dict(self.__dict__)
-
-	def from_dict(self,dict):
-		self.__dict__.update(dict)
-
 
 
 
@@ -163,6 +154,63 @@ def removeEmptyFolder(basedir):
 						print(tmp)
 						os.rmdir(tmp)
 
+def def_process(*args) :
+	n, iter, idx, size = args
+	return n[idx:idx + size]
+
+def do_while_template(main_param, total_size, unit_size, process=def_process,
+                      process_init=lambda *args: None,
+                      process_end=lambda *args: None,
+                      prcess_filter=lambda struct_local:(struct_local.main_param, struct_local.iter, struct_local.buff_index, struct_local.real_size)):
+	"""
+	enable struct_local method are  flows for prcess_filter
+	['total_size',  'iter', 'remain_size', 'length', 'unit_size', 'buff_index', 'process_end', 'main_param']
+
+	"""
+	remain_size = total_size
+
+	buff_index = 0
+	list_ret = []
+	iter =0
+	#print(locals().keys())
+	real_size =0
+	args = prcess_filter(neo_class.Struct(**locals()))
+	ret_process = process_init(*args)
+
+	if ret_process != None:
+		list_ret.append(ret_process)
+
+	while remain_size>0:
+		real_size = min(remain_size, unit_size)
+		args = prcess_filter(neo_class.Struct(**locals()))
+		ret_process = process(*args)
+		try:
+			if ret_process == None:
+				break
+			list_ret.append(ret_process)
+		finally:
+			remain_size -= unit_size
+			buff_index += unit_size
+			iter +=1
+	args = prcess_filter(neo_class.Struct(**locals()))
+	ret_process = process_end(*args)
+	if ret_process != None:
+		list_ret.append(ret_process)
+
+	return 	list_ret
+
+
+
+def sample_while():
+	sample_buff = "0123456789"*10
+	print(sample_buff)
+	prcess_filter = lambda struct_local: (
+	struct_local.main_param, struct_local.iter, struct_local.buff_index, struct_local.real_size)
+	prcess = lambda n, iter,idx, size: n[idx:idx + size]
+	list_ret = do_while_template(sample_buff,len(sample_buff),10,prcess,prcess_filter=prcess_filter)
+
+	list_ret = neo_class.SampleWhileTemplate(sample_buff,len(sample_buff),10).get_result()
+	print(list_ret)
 
 def get_safe_mapvalue(maparg,key,defvalue=''):
 	if key in maparg:
@@ -283,6 +331,8 @@ def get_ext_name_from_path(path):
 	root,ext = os.path.splitext(path)
 	return ext
 if __name__ == '__main__':
+	sample_while()
+	exit()
 	ext= get_ext_name_from_path("C:/app/PYTOOL/pythonshell.py")
 	print(ext)
 	exit()

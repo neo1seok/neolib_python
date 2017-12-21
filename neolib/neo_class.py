@@ -298,14 +298,105 @@ class NeoRunnableClass:
 	def end_run(self):
 		if self.exit: exit()
 
+class WhileTemplate():
+
+	def __init__(self,main_param, total_size, unit_size):
+
+
+
+		#self.prcess_filter = lambda *args: (self.main_param, self.iter, self.buff_index, self.real_size)
+
+		self.main_param = main_param
+		self.unit_size = unit_size
+		self.total_size = total_size
+		self.remain_size = self.total_size
+
+		self.buff_index = 0
+
+		self.iter = 0
+		# print(locals().keys())
+		self.real_size = 0
+		self.do_run()
+
+	def prcess_filter(self, *args):
+		return  (self.main_param, self.iter, self.buff_index, self.real_size)
+	def def_process(self,*args):
+		return None
+	def process_init(self,*args):
+		return None
+	def process_end(self,*args):
+		return None
+	def process(self,*args):
+		n, iter, idx, size = args
+		return n[idx:idx + size]
+
+	def do_run(self):
+		self.list_ret = []
+		args = self.prcess_filter()
+		ret_process = self.process_init(*args)
+
+		if ret_process != None:
+			self.list_ret.append(ret_process)
+
+		while self.remain_size > 0:
+			self.real_size = min(self.remain_size, self.unit_size)
+			args = self.prcess_filter()
+			ret_process = self.process(*args)
+			try:
+				if ret_process == None:
+					break
+				self.list_ret.append(ret_process)
+			finally:
+				self.remain_size -= self.unit_size
+				self.buff_index += self.unit_size
+				self.iter += 1
+		args = self.prcess_filter()
+		ret_process = self.process_end(*args)
+		if ret_process != None:
+			self.list_ret.append(ret_process)
+
+		return self.list_ret
+	def get_result(self):
+		return self.list_ret
+
+class SampleWhileTemplate(WhileTemplate):
+	def process_init(self,*args):
+		n, iter, idx, size,unit_size = args
+		return None
+	def prcess_filter(self, *args):
+		return  (self.main_param, self.iter, self.buff_index, self.real_size,self.unit_size)
+
+	def process(self,n, iter, idx, size,unit_size):
+		#n, iter, idx, size,unit_size = args
+		return n[idx:idx + size]
+
+
+class Struct:
+	def __init__(self, **entries):
+		self.__dict__.update(entries)
+
+	def get_dict(self):
+		return dict(self.__dict__)
+
+	def from_dict(self,dict):
+		self.__dict__.update(dict)
+
+
 """
 from neolib import neo_class
 class SampleRunnable(neo_class.NeoRunnableClass):
+	def __init__(self):
+		neo_class.NeoRunnableClass.__init__(self)
+
 	def init_run(self):
 		None
 
 	def do_run(self):
 		None
 
+if __name__ == "__main__":
+	SampleRunnable("D:/PROJECT/GIANT_3/DOCS/g3_api.xlsx").run()
+
+	pass
 
 """
