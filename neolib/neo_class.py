@@ -4,11 +4,14 @@ import queue
 import threading
 from threading import Lock
 import datetime
-import os
+import os,io
+
 import shutil
 import  time
 import sys
 import re
+
+
 
 from neolib import neoutil
 def move_exist_file(filename):
@@ -63,7 +66,8 @@ class FakeLog:
 		# 	fp.close()
 		# self.lock.release()
 		print(relamsg)
-		None
+		pass
+
 
 	def write_org(self, title,fmt, *args):
 		msg = fmt % args
@@ -99,7 +103,7 @@ class NeoRunnableClassOldStyle:
 		self.init_local_set()
 
 	def init_local_set(self):
-		None
+		pass
 	def setDefArges(self):
 		self.defMapArgs = {
 			'exit': True,
@@ -125,14 +129,14 @@ class NeoRunnableClassOldStyle:
 
 
 	def InitRun(self):
-		None
+		pass
 
 	def doRun(self):
-		None
+		pass
 
 
 	def outLog(self):
-		None
+		pass
 
 	def endRun(self):
 
@@ -142,14 +146,14 @@ class NeoRunnableClassOldStyle:
 class NeoAnalyzeClasss(NeoRunnableClassOldStyle):
 	strlines = ""
 	def SetClopBoard(self):
-		None
+		pass
 	def outLog(self):
 		fb = open('sample_xml.txt', 'wb')
 		fb.write(self.strlines.encode())
 		fb.close()
 		self.SetClopBoard()
 		#neolib4Win.SetClipBoard(self.strlines)
-		None
+		pass
 
 
 class ConvStringForm:
@@ -188,7 +192,7 @@ class ConvStringForm:
 		self.updateFunction()
 
 
-		None
+		pass
 
 	def updateFunction(self):
 		if self.intype != "":
@@ -233,7 +237,7 @@ class ConvStringForm:
 		result = re.findall(self.pattcamel,orgstr)
 		for tmp in result:
 			print(tmp[1])
-			None
+			pass
 		return  list(map((lambda n:n),result))
 
 
@@ -254,6 +258,7 @@ class NeoRunnableClass:
 	is_just_run_this_class = True
 
 	def __init__(self, **kwargs):
+		self.str_arg_info = ""
 		self.map_args = {}
 		self.maps = neoutil.getMapsFromArgs(sys.argv)
 		self.set_def_args()
@@ -264,15 +269,23 @@ class NeoRunnableClass:
 		self.map_args.update(self.maps)
 		for key, vlaue in kwargs.items():
 			self.map_args[key] = vlaue
+
+		self.str_args =Struct(**self.map_args)
 		self.init()
 
 	# def __init__(self):
 	# 	None
 	def init(self):
-		None
+		stream = io.StringIO()
+		print("Enable args",file=stream)
+		for key,val in self.map_args.items():
+			print(key,":",val,file=stream)
+		self.str_arg_info = stream.getvalue()
+
+		pass
 	def set_def_args(self):
 		self.defMapArgs = {
-			'exit': True,
+			'exit': False,
 		}
 
 	def run(self):
@@ -287,13 +300,13 @@ class NeoRunnableClass:
 		self.end_run()
 
 	def init_run(self):
-		None
+		pass
 
 	def do_run(self):
-		None
+		pass
 
 	def out_log(self):
-		None
+		pass
 
 	def end_run(self):
 		if self.exit: exit()
@@ -389,13 +402,13 @@ class SampleRunnable(neo_class.NeoRunnableClass):
 		neo_class.NeoRunnableClass.__init__(self)
 
 	def init_run(self):
-		None
+		pass
 
 	def do_run(self):
-		None
+		pass
 
 if __name__ == "__main__":
-	SampleRunnable("D:/PROJECT/GIANT_3/DOCS/g3_api.xlsx").run()
+	SampleRunnable().run()
 
 	pass
 
