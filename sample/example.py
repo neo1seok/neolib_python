@@ -1,5 +1,5 @@
 
-from neolib import neoutil,file_util
+from neolib import neoutil,file_util,neo_class
 
 ret = neoutil.HexString2ByteArray('aaaa')
 neoutil.ByteArray2HexString(ret)
@@ -18,6 +18,20 @@ def isfilter(tuploepath,etc):
 		return True
 	return False
 
+class SampleRunnable(neo_class.NeoRunnableClass):
+	def __init__(self):
+		neo_class.NeoRunnableClass.__init__(self)
+
+	def init_run(self):
+		pass
+
+	def do_run(self):
+		pass
+
+if __name__ == "__main__":
+	SampleRunnable().run()
+
+	pass
 
 
 print(isfilter)

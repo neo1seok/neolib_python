@@ -13,7 +13,9 @@ import re
 
 
 
-from neolib import neoutil
+#from neolib import neoutil
+from neolib import core_util
+
 def move_exist_file(filename):
 	if os.path.isfile(filename):
 		shutil.move(filename, "log/"+filename + ".{0}.tmp".format(datetime.datetime.now().strftime("%Y%m%d.%H%M%S")))
@@ -89,7 +91,7 @@ class NeoRunnableClassOldStyle:
 
 	def __init__(self,**kwargs):
 		self.mapArgs = {}
-		self.maps = neoutil.getMapsFromArgs(sys.argv)
+		self.maps = core_util.getMapsFromArgs(sys.argv)
 		self.setDefArges()
 
 
@@ -260,7 +262,7 @@ class NeoRunnableClass:
 	def __init__(self, **kwargs):
 		self.str_arg_info = ""
 		self.map_args = {}
-		self.maps = neoutil.getMapsFromArgs(sys.argv)
+		self.maps = core_util.getMapsFromArgs(sys.argv)
 		self.set_def_args()
 
 		print("__init__", self.__class__)
@@ -270,7 +272,7 @@ class NeoRunnableClass:
 		for key, vlaue in kwargs.items():
 			self.map_args[key] = vlaue
 
-		self.str_args =Struct(**self.map_args)
+		self.str_args =core_util.Struct(**self.map_args)
 		self.init()
 
 	# def __init__(self):
@@ -384,15 +386,15 @@ class SampleWhileTemplate(WhileTemplate):
 		return n[idx:idx + size]
 
 
-class Struct:
-	def __init__(self, **entries):
-		self.__dict__.update(entries)
+def sample_while():
+	sample_buff = "0123456789"*10
+	print(sample_buff)
+	prcess_filter = lambda struct_local: (
+	struct_local.main_param, struct_local.iter, struct_local.buff_index, struct_local.real_size)
+	prcess = lambda n, iter,idx, size: n[idx:idx + size]
 
-	def get_dict(self):
-		return dict(self.__dict__)
-
-	def from_dict(self,dict):
-		self.__dict__.update(dict)
+	list_ret = SampleWhileTemplate(sample_buff,len(sample_buff),10).get_result()
+	print(list_ret)
 
 
 """

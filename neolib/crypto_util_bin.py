@@ -19,7 +19,7 @@ def sha256(bin_input):
 
 
 def getrandom(size):
-	return bytearray(random.getrandbits(8) for _ in range(size))
+	return bytes(random.getrandbits(8) for _ in range(size))
 
 
 def sha1(bin_input):

@@ -25,8 +25,8 @@ import datetime
 from neolib.hexstr_util import *
 from logging import handlers
 from neolib.file_util import *
-from neolib import neo_class
-from neolib.neo_class import Struct
+from neolib.core_util import *
+
 #from neolib.general_import import *
 
 
@@ -58,26 +58,7 @@ def listarg2Map(list):
 		i=i+1
 	return maparg
 
-def get_maps_from_args(argv):
-	length = len(argv)
-	#print(argv)
 
-	maps = {tmp[1:]: '' for tmp in argv if tmp.startswith('-')}
-
-	for key, val in maps.items():
-		idx = argv.index('-' + key)
-	#	print(idx)
-		if idx + 1 >= length: continue
-		if argv[idx + 1].startswith('-'): continue
-
-		maps[key] = argv[idx + 1]
-	return maps
-
-def getMapsFromArgs(argv):
-	return get_maps_from_args(argv)
-
-def get_struct_from_args(argv):
-	return Struct(**get_maps_from_args(argv))
 
 #
 # def HexString2ByteArray(hexstr) :
@@ -174,7 +155,7 @@ def do_while_template(main_param, total_size, unit_size, process=def_process,
 	iter =0
 	#print(locals().keys())
 	real_size =0
-	args = prcess_filter(neo_class.Struct(**locals()))
+	args = prcess_filter(Struct(**locals()))
 	ret_process = process_init(*args)
 
 	if ret_process != None:
@@ -182,7 +163,7 @@ def do_while_template(main_param, total_size, unit_size, process=def_process,
 
 	while remain_size>0:
 		real_size = min(remain_size, unit_size)
-		args = prcess_filter(neo_class.Struct(**locals()))
+		args = prcess_filter(Struct(**locals()))
 		ret_process = process(*args)
 		try:
 			if ret_process == None:
@@ -192,7 +173,7 @@ def do_while_template(main_param, total_size, unit_size, process=def_process,
 			remain_size -= unit_size
 			buff_index += unit_size
 			iter +=1
-	args = prcess_filter(neo_class.Struct(**locals()))
+	args = prcess_filter(Struct(**locals()))
 	ret_process = process_end(*args)
 	if ret_process != None:
 		list_ret.append(ret_process)
@@ -209,7 +190,7 @@ def sample_while():
 	prcess = lambda n, iter,idx, size: n[idx:idx + size]
 	list_ret = do_while_template(sample_buff,len(sample_buff),10,prcess,prcess_filter=prcess_filter)
 
-	list_ret = neo_class.SampleWhileTemplate(sample_buff,len(sample_buff),10).get_result()
+	#list_ret = SampleWhileTemplate(sample_buff,len(sample_buff),10).get_result()
 	print(list_ret)
 
 def get_safe_mapvalue(maparg,key,defvalue=''):
