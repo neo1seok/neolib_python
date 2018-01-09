@@ -1,4 +1,4 @@
-__version__ = "1.1.7"
+__version__ = "1.1.8"
 def main():
 	print("neolib module")
 if __name__ == "__main__":
