@@ -1,5 +1,5 @@
 #from calc_crypto.util import *
-from neolib.crypto.block_cipher import BaseBlockCipher128
+from neolib.crypto.block_cipher import BaseBlockCipher128, BlockCipherMode
 
 # encoding: utf-8
 
@@ -189,8 +189,8 @@ def GetB3(A) :
 
 class BlockCipherSEED(BaseBlockCipher128) :
 	unit_size = 16
-	def __init__(self,UserKey) :
-		BaseBlockCipher128.__init__(UserKey)
+	def __init__(self, user_key,iv,block_mode = BlockCipherMode.CBC) :
+		BaseBlockCipher128.__init__(user_key,iv,block_mode)
 		'''
 		
 		:param UserKey: 16바이트
@@ -211,7 +211,7 @@ class BlockCipherSEED(BaseBlockCipher128) :
 		self.KC13 = 0xef3733c6
 		self.KC14 = 0xde6e678d
 		self.KC15 = 0xbcdccf1b
-		self.RoundKey = self.SeedRoundKey(UserKey)
+		self.RoundKey = self.SeedRoundKey(user_key)
 
 	def SeedEncrypt(self, Src) :
 		L0 = []

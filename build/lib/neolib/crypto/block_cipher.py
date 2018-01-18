@@ -67,19 +67,19 @@ class BaseBlockCipher128:
 
 		return result_buff
 
-	def ECB_dec(self, src, iv):
-		return self.crypto_template(src, None, lambda src, struct: src, lambda dst, struct: dst, self.decrypt)
+	def ECB_dec(self, src):
+		return self.crypto_template(src, None, lambda src, struct: src, lambda dst, struct: dst, self.decrypt_round)
 
 	# return self.ECB_calc(src,self.decrypt)
 	# None
 
-	def ECB_enc(self, src, iv):
-		return self.crypto_template(src, None, lambda src, struct: src, lambda dst, struct: dst, self.encrypt)
+	def ECB_enc(self, src):
+		return self.crypto_template(src, None, lambda src, struct: src, lambda dst, struct: dst, self.encrypt_round)
 
 	# return self.ECB_calc(src,self.encrypt)
 
 
-	def CBC_enc(self, src, iv):
+	def CBC_enc(self, src):
 		def prev_iv_process(src, struct):
 			input_value = calc_xor(src, struct.iv)
 			# bytes([ src[idx]^struct.iv[idx] for idx in range(len(src))])
@@ -89,11 +89,11 @@ class BaseBlockCipher128:
 			struct.iv = dst
 			return dst
 
-		return self.crypto_template(src, iv, prev_iv_process, post_iv_process, self.encrypt)
+		return self.crypto_template(src, self.iv, prev_iv_process, post_iv_process, self.encrypt_round)
 
 		None
 
-	def CBC_dec(self, src, iv):
+	def CBC_dec(self, src):
 
 		def prev_iv_process(src, struct):
 			struct.iv2 = src
@@ -105,9 +105,9 @@ class BaseBlockCipher128:
 			struct.iv = struct.src_buff
 			return cypherkey
 
-		return self.crypto_template(src, iv, prev_iv_process, post_iv_process,self.decrypt)
+		return self.crypto_template(src, self.iv, prev_iv_process, post_iv_process,self.decrypt_round)
 
-	def CTR_Comm(self, src, nonce, calc):
+	def CTR_Comm(self, src,  calc):
 		def prev_iv_process(src, struct):
 			ret = struct.iv[0:8] + struct.count.to_bytes(8, 'big')
 			return ret
@@ -117,13 +117,13 @@ class BaseBlockCipher128:
 			# input_value = bytes([ src[idx]^dst[idx] for idx in range(len(src))])
 			return input_value
 
-		return self.crypto_template(src, nonce, prev_iv_process, post_iv_process, calc)
+		return self.crypto_template(src, self.iv, prev_iv_process, post_iv_process, calc)
 
-	def CTR_enc(self, src, iv):
-		return self.CTR_Comm(src, iv, self.encrypt)
+	def CTR_enc(self, src):
+		return self.CTR_Comm(src,  self.encrypt_round)
 
-	def CTR_dec(self, src, iv):
-		return self.CTR_Comm(src, iv, self.encrypt)
+	def CTR_dec(self, src):
+		return self.CTR_Comm(src,  self.encrypt_round)
 	def encrypt_round(self, msg):
 
 		pass
@@ -132,10 +132,10 @@ class BaseBlockCipher128:
 		pass
 
 	def encrypt(self, msg):
-		return self.enc_block(msg,self.iv)
+		return self.enc_block(msg)
 
 	def decrypt(self, msg):
-		return self.dec_block(msg, self.iv)
+		return self.dec_block(msg)
 
 
 class SampleAES(BaseBlockCipher128):

@@ -92,6 +92,28 @@ class MyTestCase(unittest.TestCase):
 
 
 		print(cipher_text, plain_text)
+	def test_sm4_cbc_from_ref(self):
+		aes_key = tobytes('91F33CD73198E5CFD964C26B08FB3AB26A855F32B0435A2D0BA693EFBBA186ED')[:16]
+		msg = tobytes("D498F47B8BBE5A650BFFF561A6088939CCB5953715E0C3399B0F07B00B505F3B")
+		iv = tobytes("5DE0033B09C684C6B66BAF147506452D")
+		cipher = tobytes("5EF49F59003627CD512C420F789B3A67AC5C7312F55BF95DCDEB94FE646F302A")
+		print("msg",b64encode(msg))
+
+		cipher_text = sm4_ref.encrypt_cbc_bt(msg,aes_key,iv)
+		print(cipher_text, tohexstr(cipher_text))
+		self.assertEqual(cipher_text, cipher)
+
+		inst = BlockCipherSM4(aes_key, iv, BlockCipherMode.CBC)
+		enc = inst.encrypt(msg)
+		print(tohexstr(enc))
+		self.assertEqual(enc, cipher)
+		dec = inst.decrypt(enc)
+		self.assertEqual(msg, dec)
+
+
+
+
+
 
 	def test_sm4_cbc(self):
 		print('test_sm4_cbc')

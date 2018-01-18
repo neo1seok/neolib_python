@@ -412,6 +412,25 @@ def encrypt_cbc(plain_text, key, iv):
 											for c in ivs[1:]])))
 	return cipher_text if PY2 else cipher_text.decode(E_FMT)
 
+def encrypt_cbc_bt(plain_bt, key, iv):
+	"""
+	SM4(CBC)加密
+	:param plain_text: 明文
+	:param key: 密钥, 小于等于16字节
+	:param iv: 初始化向量, 小于等于16字节
+	"""
+
+
+	ivs = [int.from_bytes(iv,'big')]
+	for i in _range(len(plain_bt) // BLOCK_BYTE):
+		sub_hex = plain_bt[i * BLOCK_BYTE:(i + 1) * BLOCK_BYTE]
+
+		cipher = encrypt(clear_num=int.from_bytes(sub_hex,'big') ^ ivs[i], mk=int.from_bytes(key, 'big'))
+
+		ivs.append(cipher)
+
+	return b"".join([ tmp.to_bytes(16,'big') for tmp in ivs[1:]])
+
 
 def decrypt_cbc(cipher_text, key, iv):
 	"""
