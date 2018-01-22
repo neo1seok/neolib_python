@@ -1,0 +1,2 @@
+pip3 install git+https://github.com/neo1seok/neolib_python.git@master
+sudo pip3 install git+https://github.com/neo1seok/neolib_python.git@master
