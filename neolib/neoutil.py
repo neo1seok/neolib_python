@@ -315,7 +315,17 @@ def get_ext_name_from_path(path):
 def get_datetime_str(fmt= "%Y-%m-%d %H:%M:%S"):
 	return datetime.now().strftime(fmt)
 
+def split_by_unit(obj_like_list,unit):
+	return [obj_like_list[unit * idx:unit * idx + unit] for idx in range(len(obj_like_list) // unit)]
+
+def simple_view_list(obj_like_list):
+	for tmp in obj_like_list:
+		print(tmp)
+
 if __name__ == '__main__':
+	ret = split_by_unit('01234567890123456789012345678901234567890123456789',16)
+	print(ret)
+	exit()
 	sample_while()
 	exit()
 	ext= get_ext_name_from_path("C:/app/PYTOOL/pythonshell.py")
