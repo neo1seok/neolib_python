@@ -60,6 +60,7 @@ release/
 obj/
 bin/
 old/
+build/
 temp/
 /adts/mapScriptPerScenarioAndMethodLine.json
 /dlltest/libeay32.dll
