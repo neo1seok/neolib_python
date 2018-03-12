@@ -4,6 +4,8 @@ import neolib
 currentVersion = neolib.__version__
 
 from distutils.core import setup
+
+
 setup(
 	name = 'neolib',
 	packages=['neolib',
@@ -17,6 +19,7 @@ setup(
 	author = 'neo1seok',
 	author_email = 'neo1seok@gmail.com',
 	keywords = ['neolib', 'neo1seok'],
+	#data_files=[('DLLs\\test',["lib\\win32\\libeay32.dll"])],
 	classifiers = [
 		"Development Status :: 5 - Production/Stable",
 		"Intended Audience :: Developers",

@@ -322,6 +322,19 @@ def simple_view_list(obj_like_list):
 	for tmp in obj_like_list:
 		print(tmp)
 
+def fill_string_to_files_ext( tag_forms, tagname,contents, org_contents):
+	fmt_st_tag,fmt_ed_tag = tag_forms
+	sttag = fmt_st_tag.format(tagname)
+	edtag = fmt_ed_tag.format(tagname)
+	patt = r"({0})(.+)({1})".format(sttag, edtag)
+	comp = re.compile(patt, re.DOTALL)
+	match = comp.search(org_contents)
+	if match == None:
+		raise Exception("SEARCH FAIL")
+	new_contents = comp.sub(r"\1\n" + contents + r"\3", org_contents)
+	return new_contents
+
+
 if __name__ == '__main__':
 	ret = split_by_unit('01234567890123456789012345678901234567890123456789',16)
 	print(ret)
