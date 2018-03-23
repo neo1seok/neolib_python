@@ -315,30 +315,54 @@ def get_ext_name_from_path(path):
 def get_datetime_str(fmt= "%Y-%m-%d %H:%M:%S"):
 	return datetime.now().strftime(fmt)
 
+def split_by_list(obj_like_list,list_sep)->list:
+	obj  = Struct()
+	obj.st_idx = 0
+	def process(obj,buf,idx):
+		ret_val = buf[obj.st_idx:obj.st_idx + idx]
+		obj.st_idx += idx
+		#print(ret_val)
+		return ret_val
+	return [ process(obj,obj_like_list,val_idx) for idx,val_idx in enumerate(list_sep)]
+def split_size_by_unit(obj_like_list_size,unit):
+	loop = obj_like_list_size // unit
+	remain = obj_like_list_size % unit
+	list_sep = [unit]*loop
+	if remain>0:
+		list_sep.append(remain)
+	return list_sep
+	#return split_by_list(obj_like_list,list_sep)
+
 def split_by_unit(obj_like_list,unit):
-	return [obj_like_list[unit * idx:unit * idx + unit] for idx in range(len(obj_like_list) // unit)]
+	list_sep = split_size_by_unit(len(obj_like_list) ,unit)
+	return split_by_list(obj_like_list,list_sep)
 
-def simple_view_list(obj_like_list):
+	#return [obj_like_list[unit * idx:unit * idx + unit] for idx in range(len(obj_like_list) // unit)]
+
+def simple_view_list(obj_like_list,tab_idex=0):
+
 	for tmp in obj_like_list:
-		print(tmp)
+		print("\t"*tab_idex,tmp)
+		if type(tmp) == list:
+			simple_view_list(tmp,tab_idex+1)
 
-def fill_string_to_files_ext( tag_forms, tagname,contents, org_contents):
-	fmt_st_tag,fmt_ed_tag = tag_forms
-	sttag = fmt_st_tag.format(tagname)
-	edtag = fmt_ed_tag.format(tagname)
+def replace_contents_by_tag( sttag, edtag,contents, org_contents):
+
 	patt = r"({0})(.+)({1})".format(sttag, edtag)
 	comp = re.compile(patt, re.DOTALL)
 	match = comp.search(org_contents)
 	if match == None:
 		raise Exception("SEARCH FAIL")
 	new_contents = comp.sub(r"\1\n" + contents + r"\3", org_contents)
+
+
 	return new_contents
 
-
 if __name__ == '__main__':
-	ret = split_by_unit('01234567890123456789012345678901234567890123456789',16)
+	ret = split_by_unit(b'0123456789012345678901234567890',10)
 	print(ret)
-	exit()
+	ret = split_size_by_unit(24,10)
+	exit(ret)
 	sample_while()
 	exit()
 	ext= get_ext_name_from_path("C:/app/PYTOOL/pythonshell.py")

@@ -6,20 +6,31 @@ def get_shee_names_from_xls(xls_file):
 	sheet_names = xl_workbook.sheet_names()
 	return sheet_names
 
-def get_lines_from_xls_template(xls_file,get_sheet,filter):
+def get_lines_from_xls_template_multi(xls_file,list_sheet_filter):
 	xl_workbook = xlrd.open_workbook(xls_file)
-	xl_sheet =  get_sheet(xl_workbook)
-#	xl_sheet = xl_workbook.sheet_by_name(sheetname)
+	list_ret = []
+	for get_sheet, comp,filter in list_sheet_filter:
+		xl_sheet =  get_sheet(xl_workbook,comp)
+		rows = [tmp for tmp in xl_sheet.get_rows()]
+		lines = [tuple([tmp.value for tmp in row]) for row in rows]
+		list_ret.append(filter(lines))
+	return list_ret
 
-	rows = [tmp for tmp in xl_sheet.get_rows()]
 
-	lines = [tuple([tmp.value for tmp in row]) for row in rows]
+def get_lines_from_xls_template(xls_file,get_sheet,comp,filter):
+# 	xl_workbook = xlrd.open_workbook(xls_file)
+# 	xl_sheet =  get_sheet(xl_workbook)
+# #	xl_sheet = xl_workbook.sheet_by_name(sheetname)
+#
+# 	rows = [tmp for tmp in xl_sheet.get_rows()]
+#
+# 	lines = [tuple([tmp.value for tmp in row]) for row in rows]
 
-	return filter(lines)
+	return get_lines_from_xls_template_multi(xls_file,[(get_sheet,comp,filter)])[0]
 
 
 def get_lines_from_xls(xls_file,sheetname,filter=lambda lines:lines):
-	return get_lines_from_xls_template(xls_file,lambda xl_workbook:xl_workbook.sheet_by_name(sheetname),filter)
+	return get_lines_from_xls_template(xls_file,lambda xl_workbook,cmp:xl_workbook.sheet_by_name(cmp),sheetname,filter)
 
 	#
 	# xl_workbook = xlrd.open_workbook(xls_file)
@@ -29,7 +40,7 @@ def get_lines_from_xls(xls_file,sheetname,filter=lambda lines:lines):
 	# lines = [tuple([tmp.value for tmp in row]) for row in rows]
 	# return filter(lines)
 def get_lines_from_xls_by_index(xls_file, index=0, filter=lambda lines:lines):
-	return get_lines_from_xls_template(xls_file, lambda xl_workbook: xl_workbook.sheet_by_index(index), filter)
+	return get_lines_from_xls_template(xls_file, lambda xl_workbook,comp: xl_workbook.sheet_by_index(comp),index, filter)
 
 	# xl_workbook = xlrd.open_workbook(xls_file)
 	# xl_sheet = xl_workbook.sheet_by_index(index)
@@ -37,6 +48,14 @@ def get_lines_from_xls_by_index(xls_file, index=0, filter=lambda lines:lines):
 	# rows = [tmp for tmp in xl_sheet.get_rows()]
 	# lines = [tuple([tmp.value for tmp in row]) for row in rows]
 	# return filter(lines)
+
+def get_list_lines_from_xls(xls_file,list_sheetname):
+	return get_lines_from_xls_template_multi(xls_file,[ (lambda xl_workbook,comp:xl_workbook.sheet_by_name(comp) ,sheetname,lambda lines:lines) for sheetname in list_sheetname])
+
+def get_list_lines_from_xls_by_index(xls_file,list_index):
+	return get_lines_from_xls_template_multi(xls_file,[ (lambda xl_workbook,comp:xl_workbook.sheet_by_index(comp) ,index,lambda lines:lines) for index in list_index])
+
+
 
 def fill_emptycell_from_prevrowcell(lines,*cols):
 	list_row=[]
@@ -71,3 +90,19 @@ def make_map_lines_from_filled_lines(lines, keyindex):
 def view_simple_lines(lines):
 	for tmp in lines:
 		print(tmp)
+
+if __name__ == "__main__":
+	ret = get_lines_from_xls("D:/PROJECT/GIANT_3/SRC/py_giant3/c_api/rsc/tls_api.xlsx","API")
+	print(ret)
+	exit()
+
+	ret = get_lines_from_xls_by_index("D:/PROJECT/GIANT_3/SRC/py_giant3/c_api/rsc/tls_api.xlsx", 0)
+	print(ret)
+
+	ret =get_list_lines_from_xls("D:/PROJECT/GIANT_3/SRC/py_giant3/c_api/rsc/tls_api.xlsx",["API","CONVERT"])
+	neoutil.simple_view_list(ret)
+
+	ret =get_list_lines_from_xls_by_index("D:/PROJECT/GIANT_3/SRC/py_giant3/c_api/rsc/tls_api.xlsx",[0,1])
+	neoutil.simple_view_list(ret)
+
+	pass
