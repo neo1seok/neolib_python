@@ -140,7 +140,7 @@ out_exe_release: $(OBJ_SET_ALL)
 	$(CXX)  $(LDFLAGS) -o $(OUT_EXE) $(OBJ_SET_ALL) $(LIB)
 
 {%for item in list_src_info%}	
-$(OBJDIR_{{item.tag.upper()}})/%.o: ../src/%.{{item.ext}}
+$(OBJDIR_{{item.tag.upper()}})/%.o: {{item.dir}}/%.{{item.ext}}
 	$({{item.gcc}}) $(CFLAG_ALL)  -c -o $@ $<	
 {%endfor%}	
 	

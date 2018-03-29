@@ -18,10 +18,12 @@ def classify_from_src(src_list,map_gcc):
 	for tmp in list_src:
 		dir, name, ext = conv(tmp)
 		print(tmp, dir, name, ext)
-		tag_name = dir.replace("/","_")+"_"+ext
+		dir_tag =dir.replace("/", "_")
+		dir_tag = dir_tag.replace(".", "_")
+		tag_name = dir_tag+"_"+ext
 		if tag_name not in ret_map:
-			ret_map[tag_name] =dict(tag=tag_name,ext=ext,list_name=[],gcc= map_gcc[ext.lower()])
-		ret_map[tag_name]["list_name"]= name
+			ret_map[tag_name] =dict(tag=tag_name,ext=ext,dir=dir,list_name=[],gcc= map_gcc[ext.lower()])
+		ret_map[tag_name]["list_name"].append(name)
 
 
 		#neoutil.simple_view_list([conv(tmp) for tmp in list_src])
