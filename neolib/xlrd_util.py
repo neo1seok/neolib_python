@@ -1,12 +1,12 @@
 from neolib import neoutil,neo_class
 import xlrd
 import  collections
-def get_shee_names_from_xls(xls_file):
+def get_shee_names_from_xls(xls_file:str)->list:
 	xl_workbook = xlrd.open_workbook(xls_file)
 	sheet_names = xl_workbook.sheet_names()
 	return sheet_names
 
-def get_lines_from_xls_template_multi(xls_file,list_sheet_filter):
+def get_lines_from_xls_template_multi(xls_file:str,list_sheet_filter:iter)->list:
 	xl_workbook = xlrd.open_workbook(xls_file)
 	list_ret = []
 	for get_sheet, comp,filter in list_sheet_filter:
@@ -32,17 +32,27 @@ def get_lines_from_xls_template(xls_file,get_sheet,comp,filter):
 def get_lines_from_xls(xls_file,sheetname,filter=lambda lines:lines):
 	return get_lines_from_xls_template(xls_file,lambda xl_workbook,cmp:xl_workbook.sheet_by_name(cmp),sheetname,filter)
 
-	#
-	# xl_workbook = xlrd.open_workbook(xls_file)
-	# xl_sheet = xl_workbook.sheet_by_name(sheetname)
-	#
-	# rows = [tmp for tmp in xl_sheet.get_rows()]
-	# lines = [tuple([tmp.value for tmp in row]) for row in rows]
-	# return filter(lines)
+
 def get_lines_from_xls_by_index(xls_file, index=0, filter=lambda lines:lines):
 	return get_lines_from_xls_template(xls_file, lambda xl_workbook,comp: xl_workbook.sheet_by_index(comp),index, filter)
 
-	# xl_workbook = xlrd.open_workbook(xls_file)
+
+def convert_map_form_lines(list_lines):
+	title_name = list_lines[0]
+	return [{title_name[idx]: col for idx, col in enumerate(line)} for line in list_lines[1:]]
+
+
+def get_list_map_from_xls(xls_file, list_sheetname,filter=lambda lines:lines):
+	return convert_map_form_lines(get_lines_from_xls(xls_file, list_sheetname,filter))
+
+
+def get_list_map_lines_from_xls_by_index(xls_file, list_index,filter=lambda lines:lines):
+	return convert_map_form_lines(get_lines_from_xls_by_index(xls_file, list_index,filter))
+
+
+
+
+# xl_workbook = xlrd.open_workbook(xls_file)
 	# xl_sheet = xl_workbook.sheet_by_index(index)
 	#
 	# rows = [tmp for tmp in xl_sheet.get_rows()]

@@ -1,4 +1,4 @@
-__version__ = "1.3.4"
+__version__ = "1.3.5"
 __dsicript__ = """
 
 *1.3.3
@@ -10,6 +10,8 @@ __dsicript__ = """
 *1.3.4
 xlr util 멀티 시트 구현 
 
+*1.3.5
+gen_make.py 추가
 	
 
 

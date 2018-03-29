@@ -1,0 +1,156 @@
+
+###############################################
+# {{title}}
+###############################################
+
+
+#------------------------------------------------------------------------#
+# main definition
+#------------------------------------------------------------------------#
+CC = gcc
+CXX = g++
+AR = ar
+LD = $(CXX)
+
+TITLE={{title}}
+
+
+
+#------------------------------------------------------------------------#
+# directory definition
+#------------------------------------------------------------------------#
+OUT_DIR = {{out_dir}}
+#example : ../lib/gnu
+
+DST_DIR = {{dist_dir}}
+#example : /usr/local
+
+DST_BIN_LIB = $(DST_DIR)/lib
+DST_BIN_INC = $(DST_DIR)/include/$(TITLE)
+
+#------------------------------------------------------------------------#
+# result definition
+#------------------------------------------------------------------------#
+OUT_STATIC_LIB = $(OUT_DIR)/lib$(TITLE).a
+OUT_SHARED_LIB = $(OUT_DIR)/lib$(TITLE).so
+OUT_EXE = $(OUT_DIR)/$(TITLE)
+
+
+#------------------------------------------------------------------------#
+# flag definition
+#------------------------------------------------------------------------#
+INC = {{incs}}
+#example : -IAAA -IBBB
+
+CDEFINE={{defines}}
+#example -DBBBB -DCCCCCC
+
+CFLAGS={{flags}}
+#example -Wall -O2 -fPIC -Wl,-Bsymbolic -std=gnu++11
+
+LDFLAGS = {{ldflags}}
+#example -shared -fPIC  -L../lib/gnu -ldl
+
+CFLAG_ALL = $(INC) $(CDEFINE) $(CFLAGS)
+
+#------------------------------------------------------------------------#
+# object directory definition
+#------------------------------------------------------------------------#
+{%for item in list_src_info%}
+OBJDIR_{{item.tag.upper()}} = obj/gnu_{{item.tag}}
+{%endfor%}
+#example
+#OBJDIR_OBJ0 = obj/gnu_obj0
+#OBJDIR_OBJ1 = obj/gnu_obj1
+
+
+#------------------------------------------------------------------------#
+# object set definition
+#------------------------------------------------------------------------#
+{%for item in list_src_info%}
+OBJ_SET_{{item.tag.upper()}} = {%for name in item.list_name%} $(OBJDIR_{{item.tag.upper()}})/{{name}}.o {%endfor%}
+{%endfor%}
+#example OBJ_SET_OBJ0 =  $(OBJDIR)/CSerialRS232.o  $(OBJDIR)/EtcModule.o  $(OBJDIR)/MemoryNode.o  $(OBJDIR)/NeoCoLib.o 
+
+
+
+	
+#------------------------------------------------------------------------#
+# all object definition
+#------------------------------------------------------------------------#		
+OBJ_SET_ALL =  {%for item in list_src_info%}$(OBJ_SET_{{item.tag.upper()}}) {%endfor%}  
+#example OBJ_SET_ALL =  $(OBJ_SET_OBJ0) $(OBJ_SET_OBJ1) $(OBJ_SET_OBJ2)
+
+
+#------------------------------------------------------------------------#
+# command option definition
+#------------------------------------------------------------------------#		
+
+all: {{def_command}}
+install: lib_install share_install
+
+clean: clean_release 
+
+before_release: 
+	test -d bin/Release || mkdir -p bin/Release
+	test -d $(OUT_DIR) || mkdir -p $(OUT_DIR)
+	{%for item in list_src_info%}test -d $(OBJDIR_{{item.tag.upper()}}) || mkdir -p $(OBJDIR_{{item.tag.upper()}})
+	{%endfor%}
+
+	
+
+
+after_release: 
+	echo 'none'
+	#mkdir -p ../include
+	#cp -pr ../include/*.h $(DST_DIR)/include
+	
+
+static: before_release out_release after_release
+share: before_release out_shared_release after_release
+exe: before_release out_exe_release after_release
+
+
+lib_install:
+	cp -p $(OUT_RELEASE)  $(DST_BIN_LIB)
+	cp -pr ../include/*.h $(DST_BIN_INC)
+	
+share_install:
+	cp -p $(OUT_SHARED_RELEASE)  $(DST_BIN_LIB)
+	mkdir -p $(DST_BIN_INC)
+	cp -pr ../include/*.h $(DST_BIN_INC)
+	ldconfig
+	#ln -s $(OUT_SHARED_RELEASE) $(OUT_SHARED_RELEASE).0.0.1
+
+		
+
+out_release: $(OBJ_SET_ALL)
+	$(AR) rcs $(OUT_STATIC_LIB) $(OBJ_SET_ALL) $(LIB)
+	
+	
+out_shared_release: $(OBJ_SET_ALL)
+	echo $(OUT_SHARED_RELEASE)
+	echo $(LDFLAGS)
+	$(CXX)  --shared $(LDFLAGS) -o $(OUT_SHARED_LIB) $(OBJ_SET_ALL) $(LIB)
+	#cp -p $(OUT_SHARED_RELEASE)  $(DST_BIN_DIR)
+
+out_exe_release: $(OBJ_SET_ALL)
+	echo $(OUT_SHARED_RELEASE)
+	echo $(LDFLAGS)
+	$(CXX)  $(LDFLAGS) -o $(OUT_EXE) $(OBJ_SET_ALL) $(LIB)
+
+{%for item in list_src_info%}	
+$(OBJDIR_{{item.tag.upper()}})/%.o: ../src/%.{{item.ext}}
+	$({{item.gcc}}) $(CFLAG_ALL)  -c -o $@ $<	
+{%endfor%}	
+	
+	
+
+clean_release: 
+	rm -f $(OBJ_SET_ALL)
+	rm -f $(OBJDIR)
+
+
+.PHONY: before_debug after_debug clean_debug before_release after_release clean_release
+
+
