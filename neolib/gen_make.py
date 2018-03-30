@@ -17,7 +17,7 @@ def classify_from_src(src_list,map_gcc):
 
 	for tmp in list_src:
 		dir, name, ext = conv(tmp)
-		print(tmp, dir, name, ext)
+		#print(tmp, dir, name, ext)
 		dir_tag =dir.replace("/", "_")
 		dir_tag = dir_tag.replace(".", "_")
 		tag_name = dir_tag+"_"+ext
@@ -41,6 +41,7 @@ def json_file_list_to_MakeFile(fmt_file,json_file,make_file):
 	#                                                  flags="-Wall -O2 -fPIC -Wl,-Bsymbolic -std=gnu++11",ldflags="-shared -fPIC  -L../lib/gnu -ldl",
 	#                                                  out_dir="../lib/gnu",	dist_dir="/usr/local",	def_command="static share")
 
+	print(map_comp_info)
 	outfile =Environment().from_string(conetnts).render(**map_comp_info)
 	file_util.StrToFile(outfile,make_file)
 

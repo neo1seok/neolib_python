@@ -342,9 +342,14 @@ def split_by_unit(obj_like_list,unit):
 def simple_view_list(obj_like_list,tab_idex=0):
 
 	for tmp in obj_like_list:
+		if type(tmp) == Struct:
+			print("neo Struct:" * tab_idex, tmp.get_dict())
+			continue
 		print("\t"*tab_idex,tmp)
 		if type(tmp) == list:
 			simple_view_list(tmp,tab_idex+1)
+
+
 
 def replace_contents_by_tag( sttag, edtag,contents, org_contents):
 

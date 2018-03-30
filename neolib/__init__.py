@@ -1,4 +1,4 @@
-__version__ = "1.3.5"
+__version__ = "1.3.6"
 __dsicript__ = """
 
 *1.3.3
@@ -13,6 +13,8 @@ xlr util 멀티 시트 구현
 *1.3.5
 gen_make.py 추가
 	
+*1.3.6
+xls line to Struct 
 
 
 """

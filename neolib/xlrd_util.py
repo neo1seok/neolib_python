@@ -1,3 +1,5 @@
+from typing import List
+
 from neolib import neoutil,neo_class
 import xlrd
 import  collections
@@ -42,13 +44,24 @@ def convert_map_form_lines(list_lines):
 	return [{title_name[idx]: col for idx, col in enumerate(line)} for line in list_lines[1:]]
 
 
-def get_list_map_from_xls(xls_file, list_sheetname,filter=lambda lines:lines):
-	return convert_map_form_lines(get_lines_from_xls(xls_file, list_sheetname,filter))
+def get_list_map_from_xls(xls_file, sheetname,filter=lambda lines:lines):
+	return convert_map_form_lines(get_lines_from_xls(xls_file, sheetname,filter))
 
 
-def get_list_map_lines_from_xls_by_index(xls_file, list_index,filter=lambda lines:lines):
+def get_list_map_from_xls_by_index(xls_file, list_index,filter=lambda lines:lines):
 	return convert_map_form_lines(get_lines_from_xls_by_index(xls_file, list_index,filter))
 
+def convert_struct_form_lines(list_lines:list)->List[neoutil.Struct]:
+	title_name = list_lines[0]
+	return [neoutil.Struct(**{title_name[idx]: col for idx, col in enumerate(line)}) for line in list_lines[1:]]
+
+
+def get_list_struct_from_xls(xls_file:str, sheetname,filter=lambda lines:lines)->List[neoutil.Struct]:
+	return convert_struct_form_lines(get_lines_from_xls(xls_file, sheetname,filter))
+
+
+def get_list_struct_from_xls_by_index(xls_file:str, list_index,filter=lambda lines:lines)->List[neoutil.Struct]:
+	return convert_struct_form_lines(get_lines_from_xls_by_index(xls_file, list_index,filter))
 
 
 
@@ -102,7 +115,9 @@ def view_simple_lines(lines):
 		print(tmp)
 
 if __name__ == "__main__":
-	ret = get_lines_from_xls("D:/PROJECT/GIANT_3/SRC/py_giant3/c_api/rsc/tls_api.xlsx","API")
+	ret = get_list_struct_from_xls("D:/PROJECT/GIANT_3/SRC/py_giant3/c_api/rsc/tls_api.xlsx","API")
+	for tmp in ret:
+		print(tmp.get_dict())
 	print(ret)
 	exit()
 
