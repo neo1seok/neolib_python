@@ -1,4 +1,4 @@
-__version__ = "1.3.6"
+__version__ = "1.3.7"
 __dsicript__ = """
 
 *1.3.3
@@ -8,14 +8,16 @@ __dsicript__ = """
 	split_by_list 추가
 	
 *1.3.4
-xlr util 멀티 시트 구현 
+	xlr util 멀티 시트 구현 
 
 *1.3.5
-gen_make.py 추가
+	gen_make.py 추가
 	
 *1.3.6
-xls line to Struct 
+	xls line to Struct 
 
+*1.3.7
+	add ctype loaad handler 
 
 """
 def main():
