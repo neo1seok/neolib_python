@@ -5,7 +5,7 @@ import  shutil
 import time
 
 import pymysql
-import  simplejson as json
+import  json
 
 import neolib.neoutil as neolib
 from neolib import neoutil,neo_class
