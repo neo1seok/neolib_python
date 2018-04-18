@@ -363,6 +363,8 @@ def replace_contents_by_tag( sttag, edtag,contents, org_contents):
 
 	return new_contents
 
+def get_base_dir(cur_file):
+	return os.path.dirname(os.path.dirname(os.path.abspath(cur_file)))
 if __name__ == '__main__':
 	ret = split_by_unit(b'0123456789012345678901234567890',10)
 	print(ret)

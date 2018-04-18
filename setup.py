@@ -20,6 +20,7 @@ setup(
 	author_email = 'neo1seok@gmail.com',
 	keywords = ['neolib', 'neo1seok'],
 	#data_files=[('DLLs\\test',["lib\\win32\\libeay32.dll"])],
+	data_files=[('Lib/site-packages/neolib/rsc',["neolib/rsc/Makefile.fmt"])],
 	classifiers = [
 		"Development Status :: 5 - Production/Stable",
 		"Intended Audience :: Developers",

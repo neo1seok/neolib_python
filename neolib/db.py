@@ -3,6 +3,7 @@ import os
 import re
 import  shutil
 import time
+from typing import List
 
 import pymysql
 import  json
@@ -263,23 +264,61 @@ class BaseMySQLRunnable():
 		None
 
 
-class MakeCreateTableFor(neo_class.NeoRunnableClassOldStyle):
+class MakeCreateTableFor(neo_class.NeoRunnableClassOldStyle,neo_class.NeoRunnableClass):
 	createTableForm ="""
-CREATE TABLE `{0}` (
-{1}
-PRIMARY KEY ({2})
+
+CREATE TABLE `{table_name}` (
+{list_column_info}
+PRIMARY KEY ({list_pki})
  ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 	"""
 #0:tablename 1:fields info 2:pri key array
 
-	fieldForm ="	`{0}` {1} {2} COMMENT '{3}',"
+	fieldForm ="	`{name}` {type} {null_info} COMMENT '{comment}',"
 #0:name 1:type 2:null type 3:comment
 
+	procedure_form = """
+#table:{table_name}
+DROP PROCEDURE IF EXISTS insert_{table_name};
+DELIMITER $$
+CREATE PROCEDURE insert_{table_name}
+({csv_param_infos} , OUT _cur_seq INT,OUT _cur_uid varchar(20))
 
-	xlsDbFile = "D:/PROJECT/자동단말기검수/DOCS/설계서/DB설계서_161123.xlsx"
+BEGIN
+
+  
+	DECLARE exit handler for SQLEXCEPTION
+	  BEGIN
+		ROLLBACK;        
+		SET _cur_seq = -1;  
+        SET _cur_uid = NULL;  
+    
+	END;
+  
+  SET _cur_seq := (SELECT MAX(seq)+1 FROM {table_name});
+   IF(_cur_seq IS NULL) THEN
+        SET _cur_seq = 1;
+    END IF;
+  set _cur_uid = concat('{prefix}','_',_cur_seq);  
+ 	START TRANSACTION;
+		INSERT INTO {table_name} ( {csv_culumns})
+		VALUE(_cur_seq,_cur_uid, {csv_params}, now(),now(),'');		
+
+	COMMIT;
+	
+END$$
+DELIMITER ;
+
+
+
+
+	"""
+#table_name,csv_param_infos,csv_culumns,csv_params
+
+	xlsDbFile = "rsc/TABLE정보.xlsx"
 
 	dropTableForm = """
-	DROP TABLE {0};
+	DROP TABLE {table_name};
 	"""
 
 	def makeMapFromDoubllist(self,ret):
@@ -312,22 +351,7 @@ PRIMARY KEY ({2})
 		print('Sheet Names', sheet_names)
 		xl_sheet = xl_workbook.sheet_by_name('TABLE정보')
 		print('Sheet name: %s' % xl_sheet.name)
-		# Or grab the first sheet by index
-		#  (sheets are zero-indexed)
-		#
-		# xl_sheet = xl_workbook.sheet_by_index(0)
-		# print ('Sheet name: %s' % xl_sheet.name)
 
-		# Pull the first row by index
-		#  (rows/columns are also zero-indexed)
-		#
-		# row = xl_sheet.row(1)  # 1st row
-		# rows = [tmp for tmp in xl_sheet.get_rows()][2:]
-		# print(rows)
-		# print([[tmp.value for tmp in row][1:] for row in [tmp for tmp in xl_sheet.get_rows()][2:]])
-		# for row in rows:
-		# 	print([tmp.value for tmp in row][1:])
-		# # print("\t".join(vals.value for vals in [tmp.value	for tmp in row][1]))
 		rows = [tmp for tmp in xl_sheet.get_rows()][3:]
 
 
@@ -335,17 +359,19 @@ PRIMARY KEY ({2})
 
 		return self.makeMapFromDoubllist(ret)
 
-		return
 
 
-	def doRun(self):
+	def do_run(self):
 		ret = self.makeMapFromExcel(self.xlsDbFile)
-		self.strlines = self.makeSqlDropAndCreate(ret,self.createTableForm,self.fieldForm)
+		self.strlines = self.makeSqlDropAndCreate(ret, self.createTableForm, self.fieldForm)
 		neolib.StrToFile(self.strlines, "adts/TABLE.SQL")
 		self.strlines = self.makeSqlDropAndCreate(ret, self.dropTableForm, '')
 		neolib.StrToFile(self.strlines, "adts/DROP.SQL")
 
 		None
+
+	def doRun(self):
+		self.do_run()
 
 	def convType(self,row):
 		name, type, nullinfo, comment, pki = row
@@ -353,21 +379,37 @@ PRIMARY KEY ({2})
 
 	def makeSqlDropAndCreate(self,ret,mainFmt,fieldForm):
 
-		self.fieldForm = fieldForm
 
 		strlines = ""
 		for key, fields in ret.items():
-			#print(list(filter(lambda x: x[4] =='PRI', fields)))
-			listpki = ["`"+name +"`" for name, type, nullinfo, comment, pki in filter(lambda x: x[4] == 'PRI', fields)]
 
-			listmethod = list(map(self.convType, fields))
-			strlines += mainFmt.format(key.lower(), "\n".join(listmethod),",".join(listpki))
+			#listpki = ["`"+name +"`" for name, type, nullinfo, comment, pki in filter(lambda x: x[4] == 'PRI', fields)]
+			listpki = ["`" + name + "`" for name, type, nullinfo, comment, pki in fields if pki == 'PRI']
+			#filter(lambda x: x[4] == 'PRI', fields)]
+			listmethod = [fieldForm.format(name=name, type=type, null_info=nullinfo, comment=comment)  for name, type, nullinfo, comment, pki in fields]
+			#listmethod = list(map(self.convType, fields))
+			#neoutil.Struct(dict(table=key.lower(),list_pki=",".join(listpki),list_column_info= "\n".join(listmethod)))
+			strlines += mainFmt.format(table_name=key.lower(),list_pki=",".join(listpki),list_column_info= "\n".join(listmethod))
 
 		return strlines
+	def conv_struct(self,list_fields)->List[neoutil.Struct]:
+		return [ neoutil.Struct(name=name, type=type, null_info=null_info, comment=comment, pki=pki) for name, type, null_info, comment, pki in list_fields]
 
+	def make_insert_procedure(self, ret ):
+		strlines = ""
+		for table_name, list_fields in ret.items():
+			list_struct = self.conv_struct(list_fields)
+			uid_name = list_struct[1].name
+			prefix = uid_name.replace("_uid","")
+			list_no_using_col_nmae = ['seq',uid_name,"updt_date","reg_date","comment"]
 
+			csv_param_infos=",".join([ "in _{name} {type}".format(**obj.get_dict()) for obj in list_struct if obj.name not in list_no_using_col_nmae])
+			csv_culumns=",".join([ "{name}".format(**obj.get_dict()) for obj in list_struct ])
+			csv_params=",".join([ "_{name}".format(**obj.get_dict()) for obj in list_struct if obj.name not in list_no_using_col_nmae])
 
+			strlines += self.procedure_form.format(**locals())
 
+		return strlines
 
 
 
@@ -432,3 +474,17 @@ class MakeDataFieldsClass(MakeCreateTableFor):
 		# neolib4Win.SetClipBoard(str)
 
 
+class SampleCreateTableAnd(MakeCreateTableFor):
+	xlsDbFile = "rsc/TABLE정보.xlsx"
+	def do_run(self):
+		ret = self.makeMapFromExcel(self.xlsDbFile)
+		self.strlines = self.makeSqlDropAndCreate(ret,self.createTableForm,self.fieldForm)
+		neolib.StrToFile(self.strlines, "table/TABLE.SQL")
+		self.strlines = self.makeSqlDropAndCreate(ret, self.dropTableForm, '')
+		neolib.StrToFile(self.strlines, "table/DROP.SQL")
+		self.strlines = self.make_insert_procedure(ret)
+		neolib.StrToFile(self.strlines, "table/PROCEDURE.SQL")
+
+if __name__ == "__main__":
+	SampleCreateTableAnd().run()
+	pass
