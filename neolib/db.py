@@ -278,9 +278,10 @@ PRIMARY KEY ({list_pki})
 #0:name 1:type 2:null type 3:comment
 
 	procedure_form = """
+#################################	
 #table:{table_name}
-DROP PROCEDURE IF EXISTS insert_{table_name};
-DELIMITER $$
+#DROP PROCEDURE IF EXISTS insert_{table_name};
+#DELIMITER $$
 CREATE PROCEDURE insert_{table_name}
 ({csv_param_infos} , OUT _cur_seq INT,OUT _cur_uid varchar(20))
 
@@ -306,8 +307,8 @@ BEGIN
 
 	COMMIT;
 	
-END$$
-DELIMITER ;
+END
+#$$DELIMITER ;
 
 
 
@@ -318,9 +319,11 @@ DELIMITER ;
 	xlsDbFile = "rsc/TABLE정보.xlsx"
 
 	dropTableForm = """
-	DROP TABLE {table_name};
+	DROP TABLE if EXISTS {table_name};
 	"""
-
+	drop_procedure_form = """
+	DROP PROCEDURE if EXISTS insert_{table_name};
+	"""
 	def makeMapFromDoubllist(self,ret):
 		maplist =  collections.OrderedDict()
 		listaa = []
