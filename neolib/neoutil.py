@@ -229,12 +229,14 @@ def _linux_set_time(time_tuple):
 	librt.clock_settime(CLOCK_REALTIME, ctypes.byref(ts))
 
 
-def create_logger(loggename,formatter = '%(threadName)s %(asctime)s - %(name)s - %(levelname)s - %(message)s',handler=None):
+def create_logger(loggename,formatter = '%(threadName)s %(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                  handler=handlers.TimedRotatingFileHandler(filename="log.txt", when='D',encoding = "UTF-8")
+                  ):
 	'''
 	formatter = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 	'''
-	if handler == None:
-		handler = handlers.TimedRotatingFileHandler(filename="log.txt", when='D')
+	# if handler == None:
+	# 	handler = handlers.TimedRotatingFileHandler(filename="log.txt", when='D')
 
 	#handler = handlers.TimedRotatingFileHandler(filename=loggename + ".txt", when='D')
 	loggename = loggename

@@ -36,6 +36,7 @@ class NeoTCPServer(NeoBASEServer,socketserver.TCPServer):
 		socketserver.TCPServer.__init__(self, ('0.0.0.0',port), RequestHandlerClass)
 		None
 
+
 class NeoUDPServer(NeoBASEServer,socketserver.UDPServer):
 	def __init__(self, port, RequestHandlerClass, etc_param=None):
 
