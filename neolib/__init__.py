@@ -1,4 +1,4 @@
-__version__ = "1.3.7"
+__version__ = "1.3.8"
 __dsicript__ = """
 
 *1.3.3
@@ -18,6 +18,11 @@ __dsicript__ = """
 
 *1.3.7
 	add ctype loaad handler 
+
+*1.3.8
+	reneal crete_logger in neoutil
+	using NeoLogger with info_f,debug_f....
+	these function use  like string format 
 
 """
 def main():

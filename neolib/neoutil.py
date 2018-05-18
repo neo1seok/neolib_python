@@ -228,8 +228,25 @@ def _linux_set_time(time_tuple):
 	# http://linux.die.net/man/3/clock_settime
 	librt.clock_settime(CLOCK_REALTIME, ctypes.byref(ts))
 
+class NeoLogger(logging.Logger):
+	def debug_f(self, msg: str, *args, **kwargs):
+		self.debug(msg.format(*args, **kwargs))
+
+	def info_f(self, msg: str, *args, **kwargs):
+		self.info(msg.format(*args, **kwargs))
+
+	def warning_f(self, msg: str, *args, **kwargs):
+		self.warning(msg.format(*args, **kwargs))
+
+	def error_f(self, msg: str, *args, **kwargs):
+		self.error(msg.format(*args, **kwargs))
+
+	def critical_f(self, msg: str, *args, **kwargs):
+		self.critical(msg.format(*args, **kwargs))
+
 
 def create_logger(loggename,formatter = '%(threadName)s %(asctime)s - %(name)s - %(levelname)s - %(message)s',
+				logger_class = None,
                   handler=handlers.TimedRotatingFileHandler(filename="log.txt", when='D',encoding = "UTF-8")
                   ):
 	'''
@@ -239,9 +256,12 @@ def create_logger(loggename,formatter = '%(threadName)s %(asctime)s - %(name)s -
 	# 	handler = handlers.TimedRotatingFileHandler(filename="log.txt", when='D')
 
 	#handler = handlers.TimedRotatingFileHandler(filename=loggename + ".txt", when='D')
-	loggename = loggename
+	#loggename = loggename
 	# create logger
-	logger = logging.getLogger(loggename)
+	if logger_class == None:
+		logger = logging.getLogger(loggename)
+	else:
+		logger = logger_class(loggename)
 
 	logger.setLevel(logging.DEBUG)
 
