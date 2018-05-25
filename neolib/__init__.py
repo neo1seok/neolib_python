@@ -1,4 +1,4 @@
-__version__ = "1.3.8"
+__version__ = "1.3.9"
 __dsicript__ = """
 
 *1.3.3
@@ -24,6 +24,8 @@ __dsicript__ = """
 	using NeoLogger with info_f,debug_f....
 	these function use  like string format 
 
+*1.3.9
+	at neo tcp server, add init param for specify host address
 """
 def main():
 	print("neolib module")

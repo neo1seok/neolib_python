@@ -33,6 +33,26 @@ def find_files(base_path,is_filter=lambda tuple_path,etc_param:True ,etc_param=N
 	'''
 	이 함수는 특정 패스 밑에 모든 파일을 리커시브하게 읽어가며
 	디텍트 하는 함수이다.
+	**sample
+
+base_path = "C:/APP/neolib_python"
+
+def is_filter(tuple_arg,etc):
+	base_path, path, dirs, tmpfile  =tuple_arg
+	filename, file_extension = os.path.splitext(tmpfile)
+	if file_extension.lower() != ".py":
+		return False
+	#print(base_path, path, dirs, tmpfile)
+	return True
+
+def conv_result(tuple_arg,etc):
+	base_path, path, dirs, tmpfile = tuple_arg
+	print(base_path, path, dirs, tmpfile)
+	return path,tmpfile
+ret = neoutil.find_files(base_path,is_filter=is_filter,conv_result=conv_result)
+print(list(ret))
+
+*****
 	:param base_path:
 	base_path,path,dirs,filename, = tuple_path
 	:return:

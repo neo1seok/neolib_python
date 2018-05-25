@@ -30,10 +30,10 @@ class NeoBASEServer():
 		None
 
 class NeoTCPServer(NeoBASEServer,socketserver.TCPServer):
-	def __init__(self, port, RequestHandlerClass, etc_param=None):
+	def __init__(self, port, RequestHandlerClass, etc_param=None,host='0.0.0.0'):
 
 		NeoBASEServer.__init__(self, port, RequestHandlerClass,etc_param)
-		socketserver.TCPServer.__init__(self, ('0.0.0.0',port), RequestHandlerClass)
+		socketserver.TCPServer.__init__(self, (host,port), RequestHandlerClass)
 		None
 
 
