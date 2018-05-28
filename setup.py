@@ -3,8 +3,8 @@ sys.path.insert(0, 'neolib')
 import neolib
 currentVersion = neolib.__version__
 
-from distutils.core import setup
-
+#from distutils.core import setup
+from setuptools import setup
 
 setup(
 	name = 'neolib',
