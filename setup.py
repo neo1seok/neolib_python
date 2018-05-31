@@ -4,16 +4,18 @@ import neolib
 currentVersion = neolib.__version__
 
 #from distutils.core import setup
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
 	name = 'neolib',
-	packages=['neolib',
-				'neolib.crypto',
-			  'sample'
-			  #'neolib.compress',
+	packages=find_packages(),
+	# packages=['neolib',
+	# 			'neolib.crypto',
+	# 		  'sample'
+	# 		  #'neolib.compress',
+	#
+	# 	],
 
-		],
 	version = currentVersion,
 	description = 'useful library 4 python developing',
 	author = 'neo1seok',
@@ -30,6 +32,7 @@ setup(
 		"Programming Language :: Python :: 3",
 		"Programming Language :: Python :: 3.3",
 		"Programming Language :: Python :: 3.4",
-		"Programming Language :: Python :: 3.5"
+		"Programming Language :: Python :: 3.5",
+		"Programming Language :: Python :: 3.6",
 	]
 )

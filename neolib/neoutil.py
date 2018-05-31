@@ -275,9 +275,12 @@ def create_logger(loggename,formatter = '%(threadName)s %(asctime)s - %(name)s -
 	# add formatter to ch
 	ch.setFormatter(formatter)
 	handler.setFormatter(formatter)
-	# add ch to logger
-	logger.removeHandler(ch)
-	logger.removeHandler(handler)
+
+	logger.handlers.clear()
+
+	# # add ch to logger
+	# logger.removeHandler(ch)
+	# logger.removeHandler(handler)
 
 	logger.addHandler(ch)
 	logger.addHandler(handler)
