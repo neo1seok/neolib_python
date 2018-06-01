@@ -1,4 +1,4 @@
-__version__ = "1.4.1"
+__version__ = "1.4.2"
 __dsicript__ = """
 
 *1.3.3
@@ -27,7 +27,10 @@ __dsicript__ = """
 *1.3.9
 	at neo tcp server, add init param for specify host address
 	
-*1.4.0	
+*1.4.0
+
+*1.4.2
+	add eno_decorator		
 """
 def main():
 	print("neolib module")
