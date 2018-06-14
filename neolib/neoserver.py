@@ -1,5 +1,6 @@
 #from neolib import neoutil,neo_class
 #import sys
+import asyncore
 import time
 #import neolib
 #import http
@@ -30,6 +31,7 @@ class NeoBASEServer():
 		None
 
 class NeoTCPServer(NeoBASEServer,socketserver.TCPServer):
+	allow_reuse_address = True
 	def __init__(self, port, RequestHandlerClass, etc_param=None,host='0.0.0.0'):
 
 		NeoBASEServer.__init__(self, port, RequestHandlerClass,etc_param)
@@ -43,6 +45,10 @@ class NeoUDPServer(NeoBASEServer,socketserver.UDPServer):
 		NeoBASEServer.__init__(self, port, RequestHandlerClass,etc_param)
 		socketserver.UDPServer.__init__(self, ('0.0.0.0',port), RequestHandlerClass)
 		None
+
+
+
+
 
 
 class baseHandleClient:
@@ -159,8 +165,40 @@ class HandleServerWithLogging(BaseHandleServer):
 		return self.logger
 
 
+
+class EchoHandler(asyncore.dispatcher_with_send):
+
+	def handle_read(self):
+		data = self.recv(8192)
+		if data:
+			self.send(data)
+
+class NeoTcpServer(asyncore.dispatcher):
+
+	def __init__(self, port,host='localhost', client_handler=EchoHandler):
+		'''
+
+
+		:param host: server host
+		:param port: server port
+		:param clientHandler:  client handler
+		'''
+		asyncore.dispatcher.__init__(self)
+		self.create_socket()
+		self.set_reuse_addr()
+		print("SEVER START",host,port)
+		self.bind((host, port))
+		self.listen(5)
+		self.client_handler = client_handler
+
+	def handle_accepted(self, sock, addr):
+		print('Incoming connection from %s' % repr(addr))
+		handler = self.client_handler(sock)
+
 #HandleClient().Test()
 #HandleClient().RunServer()
 if __name__ == '__main__':
-	HandleServerWithLogging(5510,SampleEchoHandleClient).run()
+	NeoTcpServer(1111)
+	asyncore.loop()
+	#HandleServerWithLogging(5510,SampleEchoHandleClient).run()
 
