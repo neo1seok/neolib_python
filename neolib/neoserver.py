@@ -24,7 +24,7 @@ class NeoBASEServer():
 		self.etc_param = etc_param
 
 	def def_debug(self, fmt, *args):
-		print(fmt % (*args,))
+		print(fmt % (args))
 		pass
 
 	def init(self):
@@ -77,7 +77,7 @@ class BaseHandleServer:
 		self.debug("%s __init__", self.__class__.__name__)
 
 	def def_debug(self, fmt, *args):
-		print(fmt % (*args,))
+		print(fmt % args)
 
 	def init(self):
 		None
@@ -173,9 +173,8 @@ class EchoHandler(asyncore.dispatcher_with_send):
 		if data:
 			self.send(data)
 
-class NeoTcpServer(asyncore.dispatcher):
-
-	def __init__(self, port,host='localhost', client_handler=EchoHandler):
+class NeoAsyncTcpServer(asyncore.dispatcher):
+	def __init__(self, port,host='localhost',client_handler=EchoHandler,logger_name='neo_tcp_server'):
 		'''
 
 
@@ -183,17 +182,29 @@ class NeoTcpServer(asyncore.dispatcher):
 		:param port: server port
 		:param clientHandler:  client handler
 		'''
+
 		asyncore.dispatcher.__init__(self)
+		self.logger = logging.getLogger(logger_name)
 		self.create_socket()
 		self.set_reuse_addr()
-		print("SEVER START",host,port)
+		self.address = host
+		self.port= port
+
+		self.logger.debug('binding to %s(%d)', self.address,self.port)
+
 		self.bind((host, port))
+		self.logger.debug('START SERVER')
 		self.listen(5)
 		self.client_handler = client_handler
 
+
 	def handle_accepted(self, sock, addr):
-		print('Incoming connection from %s' % repr(addr))
-		handler = self.client_handler(sock)
+		self.logger.debug('Incoming connection from %s' % repr(addr))
+		try:
+			handler = self.client_handler(sock,addr)
+			handler.server = self
+		except Exception as ext:
+			print(ext)
 
 #HandleClient().Test()
 #HandleClient().RunServer()

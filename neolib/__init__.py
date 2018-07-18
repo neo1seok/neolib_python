@@ -1,4 +1,4 @@
-__version__ = "1.4.3"
+__version__ = "1.5.1"
 __dsicript__ = """
 
 *1.3.3
@@ -30,7 +30,13 @@ __dsicript__ = """
 *1.4.0
 
 *1.4.2
-	add eno_decorator		
+	add eno_decorator
+*1.5.0
+	add async tcp server			
+	
+*1.5.1
+	update db
+	- generate call insert with charset	
 """
 def main():
 	print("neolib module")

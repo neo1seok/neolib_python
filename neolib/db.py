@@ -406,7 +406,12 @@ END
 			prefix = uid_name.replace("_uid","")
 			list_no_using_col_nmae = ['seq',uid_name,"updt_date","reg_date","comment"]
 
-			csv_param_infos=",".join([ "in _{name} {type}".format(**obj.get_dict()) for obj in list_struct if obj.name not in list_no_using_col_nmae])
+			for obj in list_struct:
+				obj.encoding = ""
+				if 'text' in obj.type or 'varchar' in obj.type:
+					obj.encoding = "CHARSET utf8"
+
+			csv_param_infos=",".join([ "in _{name} {type} {encoding}".format(**obj.get_dict()) for obj in list_struct if obj.name not in list_no_using_col_nmae])
 			csv_culumns=",".join([ "{name}".format(**obj.get_dict()) for obj in list_struct ])
 			csv_params=",".join([ "_{name}".format(**obj.get_dict()) for obj in list_struct if obj.name not in list_no_using_col_nmae])
 
