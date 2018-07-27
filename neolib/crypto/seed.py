@@ -2,6 +2,7 @@
 from neolib.crypto.block_cipher import BaseBlockCipher128, BlockCipherMode
 
 # encoding: utf-8
+from neolib.hexstr_util import tohexstr
 
 """
 Copyright (C) 2011-2014 Nurilab.
@@ -190,7 +191,7 @@ def GetB3(A) :
 class BlockCipherSEED(BaseBlockCipher128) :
 	unit_size = 16
 	def __init__(self, user_key,iv,block_mode = BlockCipherMode.CBC) :
-		BaseBlockCipher128.__init__(user_key,iv,block_mode)
+		BaseBlockCipher128.__init__(self,user_key,iv,block_mode)
 		'''
 		
 		:param UserKey: 16바이트
@@ -274,9 +275,11 @@ class BlockCipherSEED(BaseBlockCipher128) :
 		self.__SeedRound__(R0, R1, L0, L1, K, 0)
 
 		return struct.pack('>LLLL', R0[0], R1[0], L0[0], L1[0])
+	# def encrypt_round(self, msg):
+	#
+	# 	pass
 
-
-	def encypt_round(self,Src):
+	def encrypt_round(self,Src):
 		return self.SeedEncrypt(Src)
 
 	def decrypt_round(self,Src):
@@ -392,8 +395,17 @@ class BlockCipherSEED(BaseBlockCipher128) :
 
 
 if __name__ == '__main__' :
-	s = SEED(b'\x00' * 16)
+
+	#s = BaseBlockCipher128(b'\x00' * 16, b'\x00' * 16)
+	s = BlockCipherSEED(b'\x00' * 16,b'\x00' * 16)
 	s.base_check()
+	plan = neoutil.HexString2ByteArray('000102030405060708090A0B0C0D0E0F')
+	res_enc = s.encrypt(plan)
+	s2 = BlockCipherSEED(b'\x00' * 16, b'\x00' * 16)
+	res_dec = s2.decrypt(res_enc)
+	print(tohexstr(plan),tohexstr(res_dec),)
+
+	exit()
 	# # 1. ����Ű �׽�Ʈ
 	# #k = s.SeedRoundKey(b'\x00' * 16)
 	#
@@ -471,8 +483,8 @@ if __name__ == '__main__' :
 	# print(neoutil.ByteArray2HexString(enc))
 	# print(neoutil.ByteArray2HexString(dec))
 
-	enc = s.CBC_enc(plan, b'\x00' * 16)
-	dec = s.CBC_dec(enc, b'\x00' * 16)
+	enc = s.CBC_enc(plan)
+	dec = s.CBC_dec(enc)
 
 	print(neoutil.ByteArray2HexString(enc))
 	print('5EBAC6E0054E166819AFF1CC6D346CDBC619F2C0A615CDF2E77843B306E775F4')

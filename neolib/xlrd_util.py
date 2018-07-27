@@ -39,28 +39,28 @@ def get_lines_from_xls_by_index(xls_file, index=0, filter=lambda lines:lines):
 	return get_lines_from_xls_template(xls_file, lambda xl_workbook,comp: xl_workbook.sheet_by_index(comp),index, filter)
 
 
-def convert_map_form_lines(list_lines):
+def convert_map_form_lines(list_lines,title_filter = lambda title:title):
 	title_name = list_lines[0]
-	return [{title_name[idx]: col for idx, col in enumerate(line)} for line in list_lines[1:]]
+	return [{title_filter(title_name[idx]): col for idx, col in enumerate(line)} for line in list_lines[1:]]
 
 
-def get_list_map_from_xls(xls_file, sheetname,filter=lambda lines:lines):
+def get_list_map_from_xls(xls_file, sheetname,filter=lambda lines:lines,title_filter = lambda title:title):
 	return convert_map_form_lines(get_lines_from_xls(xls_file, sheetname,filter))
 
 
-def get_list_map_from_xls_by_index(xls_file, list_index,filter=lambda lines:lines):
+def get_list_map_from_xls_by_index(xls_file, list_index,filter=lambda lines:lines,title_filter = lambda title:title):
 	return convert_map_form_lines(get_lines_from_xls_by_index(xls_file, list_index,filter))
 
-def convert_struct_form_lines(list_lines:list)->List[neoutil.Struct]:
+def convert_struct_form_lines(list_lines:list,title_filter = lambda title:title)->List[neoutil.Struct]:
 	title_name = list_lines[0]
-	return [neoutil.Struct(**{title_name[idx]: col for idx, col in enumerate(line)}) for line in list_lines[1:]]
+	return [neoutil.Struct(**{title_filter(title_name[idx]): col for idx, col in enumerate(line)}) for line in list_lines[1:]]
 
 
-def get_list_struct_from_xls(xls_file:str, sheetname,filter=lambda lines:lines)->List[neoutil.Struct]:
+def get_list_struct_from_xls(xls_file:str, sheetname,filter=lambda lines:lines,title_filter = lambda title:title)->List[neoutil.Struct]:
 	return convert_struct_form_lines(get_lines_from_xls(xls_file, sheetname,filter))
 
 
-def get_list_struct_from_xls_by_index(xls_file:str, list_index,filter=lambda lines:lines)->List[neoutil.Struct]:
+def get_list_struct_from_xls_by_index(xls_file:str, list_index,filter=lambda lines:lines,title_filter = lambda title:title)->List[neoutil.Struct]:
 	return convert_struct_form_lines(get_lines_from_xls_by_index(xls_file, list_index,filter))
 
 

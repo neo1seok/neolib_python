@@ -1,6 +1,17 @@
-__version__ = "1.5.1"
+__version__ = "1.5.4"
 __dsicript__ = """
-
+*1.5.4
+	update xlrd list sturct and map with title_filter
+	
+*1.5.2
+	update seed
+	
+	
+*1.5.1
+update db
+- generate call insert with charset
+	
+	
 *1.3.3
 	replace_contents_by_tag 추가
 	split_by_unit
@@ -34,9 +45,7 @@ __dsicript__ = """
 *1.5.0
 	add async tcp server			
 	
-*1.5.1
-	update db
-	- generate call insert with charset	
+	
 """
 def main():
 	print("neolib module")

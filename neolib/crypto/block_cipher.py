@@ -4,7 +4,7 @@ from Crypto.Cipher import AES
 
 from neolib.crypto_util_bin import *
 
-
+from neolib.hexstr_util import *
 from neolib import neoutil
 
 class BlockCipherMode(Enum):
@@ -17,11 +17,13 @@ class BaseBlockCipher128:
 	unit_size = 16
 
 	def __init__(self, user_key,iv,block_mode = BlockCipherMode.CBC):
-		'''
-
-		:param UserKey: 16바이트
-		'''
+		# '''
+		#
+		# :param UserKey: 16바이트
+		# '''
+		print(type(self))
 		self.user_key = tobytes(user_key)
+
 		self.iv = tobytes(iv)
 
 		self.map_process_block = {
@@ -150,6 +152,9 @@ class SampleAES(BaseBlockCipher128):
 		return obj.decrypt(Src)
 
 if __name__ == '__main__':
+	s = BaseBlockCipher128(b'\x00' * 16, b'\x00' * 16)
+	#BaseBlockCipher128()
+	#exit()
 	key = tobytes('008545CC1BA298F2C9C10A18FE205D3D')
 	msg = tobytes('F84015FFDB88A19DD5600D047C5E803A'+"F84015FFDB88A19DD5600D047C5E803A")
 	cipher = tobytes('ED08818197015FA4812E75BFF06515D8')
