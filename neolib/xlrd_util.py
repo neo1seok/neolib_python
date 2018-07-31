@@ -45,11 +45,11 @@ def convert_map_form_lines(list_lines,title_filter = lambda title:title):
 
 
 def get_list_map_from_xls(xls_file, sheetname,filter=lambda lines:lines,title_filter = lambda title:title):
-	return convert_map_form_lines(get_lines_from_xls(xls_file, sheetname,filter,title_filter))
+	return convert_map_form_lines(get_lines_from_xls(xls_file, sheetname,filter),title_filter)
 
 
 def get_list_map_from_xls_by_index(xls_file, list_index,filter=lambda lines:lines,title_filter = lambda title:title):
-	return convert_map_form_lines(get_lines_from_xls_by_index(xls_file, list_index,filter,title_filter))
+	return convert_map_form_lines(get_lines_from_xls_by_index(xls_file, list_index,filter),title_filter)
 
 def convert_struct_form_lines(list_lines:list,title_filter = lambda title:title)->List[neoutil.Struct]:
 	title_name = list_lines[0]
@@ -57,11 +57,11 @@ def convert_struct_form_lines(list_lines:list,title_filter = lambda title:title)
 
 
 def get_list_struct_from_xls(xls_file:str, sheetname,filter=lambda lines:lines,title_filter = lambda title:title)->List[neoutil.Struct]:
-	return convert_struct_form_lines(get_lines_from_xls(xls_file, sheetname,filter,title_filter))
+	return convert_struct_form_lines(get_lines_from_xls(xls_file, sheetname,filter),title_filter)
 
 
 def get_list_struct_from_xls_by_index(xls_file:str, list_index,filter=lambda lines:lines,title_filter = lambda title:title)->List[neoutil.Struct]:
-	return convert_struct_form_lines(get_lines_from_xls_by_index(xls_file, list_index,filter,title_filter))
+	return convert_struct_form_lines(get_lines_from_xls_by_index(xls_file, list_index,filter),title_filter)
 
 
 
