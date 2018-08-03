@@ -21,11 +21,14 @@ def tobytes(in_data):
 		return in_data
 	if type(in_data) == list:
 		return bytes(in_data)
-def tohexstr(in_data):
+	if type(in_data) == bytearray:
+		return bytes(in_data)
+
+def tohexstr(in_data,sep=""):
 	if type(in_data) == str:
 		return in_data.replace(' ','')
-	if type(in_data) == bytes or type(in_data) == list:
-		return ByteArray2HexString(in_data)
+	if type(in_data) == bytes or type(in_data) == list or type(in_data) == bytearray:
+		return ByteArray2HexString(in_data,sep)
 
 
 if __name__ == "__main__":

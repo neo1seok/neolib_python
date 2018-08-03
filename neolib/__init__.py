@@ -1,5 +1,7 @@
-__version__ = "1.5.4"
+__version__ = "1.5.6"
 __dsicript__ = """
+*1.5.5
+	hexstr_util 수정
 *1.5.4
 	update xlrd list sturct and map with title_filter
 	
