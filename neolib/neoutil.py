@@ -407,7 +407,17 @@ if __name__ == '__main__':
 	print(note_with_unit(1025))
 	print(note_with_unit(0))
 
+def input_multi_lines(title = "input msg for history(X is break):\n",exit_str="X"):
+	msg = ""
+	while True:
+		sub = input(title)
+		if sub == exit_str:
+			break
+		msg += "\n" + sub
 
+		# print(msg)
+		title = ""
+	return msg
 						# if __name__ != '__main__':
 # 	exit()
 #
