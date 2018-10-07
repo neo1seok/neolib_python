@@ -247,13 +247,13 @@ class NeoLogger(logging.Logger):
 
 def create_logger(loggename,formatter = '%(threadName)s %(asctime)s - %(name)s - %(levelname)s - %(message)s',
 				logger_class = None,
-                  handler=handlers.TimedRotatingFileHandler(filename="log.txt", when='D',encoding = "UTF-8")
+                  handler=None
                   ):
 	'''
 	formatter = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 	'''
-	# if handler == None:
-	# 	handler = handlers.TimedRotatingFileHandler(filename="log.txt", when='D')
+	if handler == None:
+		handler = handlers.TimedRotatingFileHandler(filename="log.txt", when='D')
 
 	#handler = handlers.TimedRotatingFileHandler(filename=loggename + ".txt", when='D')
 	#loggename = loggename

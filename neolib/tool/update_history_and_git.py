@@ -97,7 +97,10 @@ class UpdateInitAndCommit():
 		pass
 
 if __name__ == '__main__':
-	msg = """add module update_history_and_git	"""
+	msg = """
+	change neoutil create_logger for default handler 
+	log.txt 가 생성 되는 퍼미션 에러가 발생할수 있다.
+	"""
 	#commmit("1.2.3",msg)
 	UpdateInitAndCommit().run(msg)
 	#main(msg)
