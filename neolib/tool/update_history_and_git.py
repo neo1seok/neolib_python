@@ -98,8 +98,8 @@ class UpdateInitAndCommit():
 
 if __name__ == '__main__':
 	msg = """
-	change neoutil create_logger for default handler 
-	log.txt 가 생성 되는 퍼미션 에러가 발생할수 있다.
+	remove print on NeoRunnableClass 
+
 	"""
 	#commmit("1.2.3",msg)
 	UpdateInitAndCommit().run(msg)
