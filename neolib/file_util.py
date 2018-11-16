@@ -70,3 +70,41 @@ print(list(ret))
 				ret = conv_result(tuplepath,etc_param)
 				yield ret
 
+
+def find_files_simple(base_path,is_filter=lambda path_name:True ):
+	'''
+	이 함수는 특정 패스 밑에 모든 파일을 리커시브하게 읽어가며
+	디텍트 하는 함수이다.
+	**sample
+
+base_path = "C:/APP/neolib_python"
+
+def is_filter(tuple_arg,etc):
+	base_path, path, dirs, tmpfile  =tuple_arg
+	filename, file_extension = os.path.splitext(tmpfile)
+	if file_extension.lower() != ".py":
+		return False
+	#print(base_path, path, dirs, tmpfile)
+	return True
+
+
+*****
+	:param base_path:
+	base_path,path,dirs,filename, = tuple_path
+	:return:
+	'''
+	if base_path == '':
+		base_path =os.getcwd()
+
+	for path, dirs, files in os.walk(base_path):
+		path = path.replace('\\','/')
+		for tmpfile in files:
+			subpath = path + "/" + tmpfile
+			if is_filter(subpath):
+				yield subpath
+
+
+if __name__ == '__main__':
+	coruoute = find_files_new(r'D:\down\zave\unscene')
+	print(list(coruoute))
+	#print(coruoute.__next__())

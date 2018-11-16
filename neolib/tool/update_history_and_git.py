@@ -98,7 +98,7 @@ class UpdateInitAndCommit():
 
 if __name__ == '__main__':
 	msg = """
-	remove print on NeoRunnableClass 
+add find_files_simple
 
 	"""
 	#commmit("1.2.3",msg)
