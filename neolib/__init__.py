@@ -1,14 +1,27 @@
 
-__version__ = "1.5.10"
+__version__ = "1.5.12"
 #[ver].[majer].[miner]
 #ver: 전체 프레임의 격변이 있을때
 #majer:큰 기능 추가가 되었을때
 #miner:버그 수정및 작은 기능 추가.
 
 __history__ = """
+* 1.5.12
+	remove print on NeoRunnableClass 
+
+	
+	
+* 1.5.11
+	remove print on NeoRunnableClass 
+
 * 1.5.10
 	change neoutil create_logger for default handler 
 	log.txt 가 생성 되는 퍼미션 에러가 발생할수 있다.
+
+	
+* 1.5.10
+	remove print on NeoRunnableClass 
+
 	
 * 1.5.9
 	change neoutil create_logger for default handler 

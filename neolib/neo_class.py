@@ -265,7 +265,7 @@ class NeoRunnableClass:
 		self.maps = core_util.getMapsFromArgs(sys.argv)
 		self.set_def_args()
 
-		print("__init__", self.__class__)
+		#print("__init__", self.__class__)
 
 		self.map_args.update(self.defMapArgs)
 		self.map_args.update(self.maps)
