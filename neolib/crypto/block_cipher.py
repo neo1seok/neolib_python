@@ -113,8 +113,10 @@ class BaseBlockCipher128:
 
 	def CTR_Comm(self, src,  calc):
 		def prev_iv_process(src, struct):
-			ret = struct.iv[0:8] + struct.count.to_bytes(8, 'big')
-			return ret
+			#ret = struct.iv[0:8] + struct.count.to_bytes(8, 'big')
+			ret = int.from_bytes(struct.iv,'big')+struct.count
+
+			return ret.to_bytes(16,'big')
 
 		def post_iv_process(dst, struct):
 			input_value = calc_xor(dst, struct.src_buff)
