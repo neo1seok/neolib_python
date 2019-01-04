@@ -98,7 +98,8 @@ class UpdateInitAndCommit():
 
 if __name__ == '__main__':
 	msg = """
-	remove print on NeoRunnableClass 
+change crypto ->block cipher->input of enc or dec
+src -> src = tobytes(src) 
 
 	"""
 	#commmit("1.2.3",msg)

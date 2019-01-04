@@ -36,6 +36,8 @@ class BaseBlockCipher128:
 	
 	def crypto_template(self, src, iv, prev_iv_process, post_iv_process, round_calc):
 		idx = 0
+		src = tobytes(src)
+
 		remain_length = len(src)
 		result_buff = b''
 
