@@ -21,7 +21,7 @@ class BaseBlockCipher128:
 		#
 		# :param UserKey: 16바이트
 		# '''
-		print(type(self))
+		#print(type(self))
 		self.user_key = tobytes(user_key)
 
 		self.iv = tobytes(iv)
