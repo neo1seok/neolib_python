@@ -98,9 +98,7 @@ class UpdateInitAndCommit():
 
 if __name__ == '__main__':
 	msg = """
-change crypto ->block cipher->input of enc or dec
-src -> src = tobytes(src) 
-
+remove sm4
 	"""
 	#commmit("1.2.3",msg)
 	UpdateInitAndCommit().run(msg)
