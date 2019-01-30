@@ -396,6 +396,10 @@ def sample_while():
 	list_ret = SampleWhileTemplate(sample_buff,len(sample_buff),10).get_result()
 	print(list_ret)
 
+class NeoByteIO(io.BytesIO):
+	def read_to_int(self,size,byteorder= 'big'):
+		buff = self.read(size)
+		return int.from_bytes(buff,byteorder)
 
 """
 from neolib import neo_class
