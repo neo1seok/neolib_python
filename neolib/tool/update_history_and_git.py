@@ -98,7 +98,7 @@ class UpdateInitAndCommit():
 
 if __name__ == '__main__':
 	msg = """
-add NeoByteIO 
+change json_preytty
 	"""
 	#commmit("1.2.3",msg)
 	UpdateInitAndCommit().run(msg)
