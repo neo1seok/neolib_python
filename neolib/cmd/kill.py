@@ -1,18 +1,28 @@
-import os,sys
+import os, sys
+
+
+def print_prc(cmd):
+	print("########START#########")
+	print(cmd)
+	print("->")
+	os.system(cmd)
+	print("########END#########")
+
 
 if __name__ == '__main__':
 	map_args = dict(enumerate(sys.argv))
-	print(dict(enumerate(sys.argv)))
-	keword = map_args.get(1,"")
-	cur_app = map_args.get(0, "")
+	print(dict(enumerate(sys.argv)), os.getpid())
+	keword = map_args.get(1, "")
+	cur_app = os.getpid()
 	cmd = f"ps -ef | grep {keword} | grep -v grep | grep -v {cur_app}"
-	print(cmd)
-	os.system(cmd)
-	killcmd = cmd+" | awk '{print $2}' | xargs kill -9"
+	# cmd = f"ps -ef | grep {keword} | grep -v grep "
+	print_prc(cmd)
+
+	killcmd = cmd + " | awk '{print $2}' | xargs kill -9"
+	print("########START#########")
 	key_val = input("kill this process? y or n?\n")
-	if key_val !="y":
+	print("########END#########")
+	if key_val != "y":
 		exit()
-	print(killcmd)
-	os.system(killcmd)
-	print(cmd)
-	os.system(cmd)
+	print_prc(killcmd)
+	print_prc(cmd)

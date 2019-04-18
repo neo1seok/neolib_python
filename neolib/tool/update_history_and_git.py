@@ -98,7 +98,7 @@ class UpdateInitAndCommit():
 
 if __name__ == '__main__':
 	msg = """
-update cmd submodule
+update cmd kill
 	"""
 	#commmit("1.2.3",msg)
 	UpdateInitAndCommit().run(msg)
