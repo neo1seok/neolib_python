@@ -98,7 +98,7 @@ class UpdateInitAndCommit():
 
 if __name__ == '__main__':
 	msg = """
-change json_preytty
+update cmd submodule
 	"""
 	#commmit("1.2.3",msg)
 	UpdateInitAndCommit().run(msg)
