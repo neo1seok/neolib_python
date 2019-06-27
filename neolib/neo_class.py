@@ -405,31 +405,6 @@ class NeoByteIO(io.BytesIO):
 
 
 
-class NeoByteBuff():
-	def __init__(self,buff,sep="",encoding='utf-8'):
-		if type(buff) == NeoByteBuff:
-			buff = buff.tobytes()
-
-		self.buff = tobytes(buff)
-		self.sep = sep
-		self.encoding = encoding
-		pass
-
-	def __str__(self):
-		return f"HEX  (len:{self.length}) {self.tohexstr()}"
-
-	@property
-	def length(self):
-		return len(self.buff)
-
-	def tohexstr(self):
-		return tohexstr(self.buff,sep=self.sep)
-
-	def tobytes(self):
-		return tobytes(self.buff)
-
-	def tostring(self):
-		return tobytes(self.buff).decode(encoding=self.encoding)
 """
 from neolib import neo_class
 class SampleRunnable(neo_class.NeoRunnableClass):
@@ -449,5 +424,4 @@ if __name__ == "__main__":
 
 """
 if __name__ == '__main__':
-	bio = NeoByteBuff(NeoByteBuff(b'aa'))
-	print(bio)
+	pass

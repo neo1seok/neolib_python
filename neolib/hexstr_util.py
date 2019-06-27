@@ -19,6 +19,9 @@ def tobytes(in_data):
 		return HexString2ByteArray(in_data)
 	if type(in_data) == bytes:
 		return in_data
+	if type(in_data) == NeoByteBuff:
+		return in_data.buff
+
 	if type(in_data) == list:
 		return bytes(in_data)
 	if type(in_data) == bytearray:
@@ -31,7 +34,34 @@ def tohexstr(in_data,sep=""):
 		return ByteArray2HexString(in_data,sep)
 
 
+class NeoByteBuff():
+	def __init__(self,buff,sep="",encoding='utf-8'):
+		# if type(buff) == NeoByteBuff:
+		# 	buff = buff.tobytes()
+
+		self.buff = tobytes(buff)
+		self.sep = sep
+		self.encoding = encoding
+		pass
+
+	def __str__(self):
+		return f"HEX  (len:{self.length}) {self.tohexstr()}"
+
+	@property
+	def length(self):
+		return len(self.buff)
+
+	def tohexstr(self):
+		return tohexstr(self.buff,sep=self.sep)
+
+	def tobytes(self):
+		return tobytes(self.buff)
+
+	def tostring(self):
+		return tobytes(self.buff).decode(encoding=self.encoding)
 if __name__ == "__main__":
+	bio = NeoByteBuff(NeoByteBuff(b'aa'))
+	print(bio)
 	print(ByteArray2HexString(b'\x03\x04'))
 	print(b'\x03\x04'[0])
 
