@@ -98,7 +98,7 @@ class UpdateInitAndCommit():
 
 if __name__ == '__main__':
 	msg = """
-move NeoByteBuff on neo_class to hexstr_util 
+add operator oveloading in  NeoByteBuff 
 	"""
 	#commmit("1.2.3",msg)
 	UpdateInitAndCommit().run(msg)

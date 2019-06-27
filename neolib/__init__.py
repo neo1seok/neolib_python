@@ -1,11 +1,14 @@
 
-__version__ = "1.5.26"
+__version__ = "1.5.27"
 #[ver].[majer].[miner]
 #ver: 전체 프레임의 격변이 있을때
 #majer:큰 기능 추가가 되었을때
 #miner:버그 수정및 작은 기능 추가.
 
 __history__ = """
+* 1.5.27
+add operator oveloading in  NeoByteBuff 
+	
 * 1.5.26
 move NeoByteBuff on neo_class to hexstr_util 
 	

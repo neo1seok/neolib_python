@@ -59,11 +59,32 @@ class NeoByteBuff():
 
 	def tostring(self):
 		return tobytes(self.buff).decode(encoding=self.encoding)
+
+	def __add__(self, other):
+		if isinstance(other, NeoByteBuff):
+			return NeoByteBuff(self.buff + other.buff)
+
+		elif isinstance(other, bytes):
+			return NeoByteBuff(self.buff + other)
+
+		elif isinstance(other, str):
+			return NeoByteBuff(self.buff + tobytes(other))
+
 if __name__ == "__main__":
+	#print(tobytes('hh'))
+
 	bio = NeoByteBuff(NeoByteBuff(b'aa'))
 	print(bio)
 	print(ByteArray2HexString(b'\x03\x04'))
-	print(b'\x03\x04'[0])
 
+
+	bio += NeoByteBuff(b'bb')
+	print(bio)
+
+	bio += b'cc'
+	print(bio)
+
+	bio += 'hh'
+	print(bio)
 	#print(tohexstr([3,5]))
 	pass
