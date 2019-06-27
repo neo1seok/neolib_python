@@ -1,10 +1,10 @@
-#import array
+
 
 def HexString2ByteArray(hexstr) :
 	return bytes.fromhex(hexstr)
 
 def ByteArray2HexString(bytes,sep="") :
-	return sep.join('{:02X}'.format(int(x)) for x in array.array('B', bytes))
+	return sep.join('{:02X}'.format(x) for x in bytes)
 	#return sep.join('{:02X}'.format(ord(x)) for x in bytes)
 
 def HexString2Text(hexstr,enc="utf-8") :
@@ -32,6 +32,8 @@ def tohexstr(in_data,sep=""):
 
 
 if __name__ == "__main__":
-	print(tohexstr(b'\x03\x04'))
-	print(tohexstr([3,5]))
+	print(ByteArray2HexString(b'\x03\x04'))
+	print(b'\x03\x04'[0])
+
+	#print(tohexstr([3,5]))
 	pass
