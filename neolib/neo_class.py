@@ -407,16 +407,21 @@ class NeoByteIO(io.BytesIO):
 
 class NeoByteBuff():
 	def __init__(self,buff,sep="",encoding='utf-8'):
+		if type(buff) == NeoByteBuff:
+			buff = buff.tobytes()
+
 		self.buff = tobytes(buff)
 		self.sep = sep
 		self.encoding = encoding
 		pass
 
 	def __str__(self):
-		return f"HEX  (len:{self.length()}) {self.tohexstr()}"
+		return f"HEX  (len:{self.length}) {self.tohexstr()}"
 
+	@property
 	def length(self):
 		return len(self.buff)
+
 	def tohexstr(self):
 		return tohexstr(self.buff,sep=self.sep)
 
@@ -443,3 +448,6 @@ if __name__ == "__main__":
 	pass
 
 """
+if __name__ == '__main__':
+	bio = NeoByteBuff(NeoByteBuff(b'aa'))
+	print(bio)
