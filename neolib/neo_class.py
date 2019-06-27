@@ -14,6 +14,8 @@ import re
 
 
 #from neolib import neoutil
+from neolib.hexstr_util import tobytes, tohexstr
+
 from neolib import core_util
 
 def move_exist_file(filename):
@@ -401,6 +403,28 @@ class NeoByteIO(io.BytesIO):
 		buff = self.read(size)
 		return int.from_bytes(buff,byteorder)
 
+
+
+class NeoByteBuff():
+	def __init__(self,buff,sep="",encoding='utf-8'):
+		self.buff = tobytes(buff)
+		self.sep = sep
+		self.encoding = encoding
+		pass
+
+	def __str__(self):
+		return f"HEX  (len:{self.length()}) {self.tohexstr()}"
+
+	def length(self):
+		return len(self.buff)
+	def tohexstr(self):
+		return tohexstr(self.buff,sep=self.sep)
+
+	def tobytes(self):
+		return tobytes(self.buff)
+
+	def tostring(self):
+		return tobytes(self.buff).decode(encoding=self.encoding)
 """
 from neolib import neo_class
 class SampleRunnable(neo_class.NeoRunnableClass):

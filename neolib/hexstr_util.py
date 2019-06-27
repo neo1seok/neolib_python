@@ -1,4 +1,4 @@
-import array
+#import array
 
 def HexString2ByteArray(hexstr) :
 	return bytes.fromhex(hexstr)

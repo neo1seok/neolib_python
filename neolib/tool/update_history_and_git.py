@@ -98,7 +98,7 @@ class UpdateInitAndCommit():
 
 if __name__ == '__main__':
 	msg = """
-update cmd kill
+add NeoByteBuff 
 	"""
 	#commmit("1.2.3",msg)
 	UpdateInitAndCommit().run(msg)
