@@ -1,11 +1,14 @@
 
-__version__ = "1.5.28"
+__version__ = "1.5.29"
 #[ver].[majer].[miner]
 #ver: 전체 프레임의 격변이 있을때
 #majer:큰 기능 추가가 되었을때
 #miner:버그 수정및 작은 기능 추가.
 
 __history__ = """
+* 1.5.29
+data ->neo_data 
+	
 * 1.5.28
 add data.py pandas   빈칸 윗쪽에서 가져오는 함수 추가. 
 	

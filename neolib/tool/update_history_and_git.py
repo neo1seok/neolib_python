@@ -98,7 +98,7 @@ class UpdateInitAndCommit():
 
 if __name__ == '__main__':
 	msg = """
-add data.py pandas   빈칸 윗쪽에서 가져오는 함수 추가. 
+data ->neo_data 
 	"""
 	#commmit("1.2.3",msg)
 	UpdateInitAndCommit().run(msg)
