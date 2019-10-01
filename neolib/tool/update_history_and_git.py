@@ -6,8 +6,7 @@ from neolib.neoutil import input_multi_lines
 
 
 class UpdateInitAndCommit():
-	form_contents = '''
-# -*- coding: utf-8 -*- 	
+	form_contents = '''# -*- coding: utf-8 -*- 	
 {version_name} = "{__version__}"
 """
 #[ver].[majer].[miner]
