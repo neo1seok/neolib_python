@@ -1,5 +1,6 @@
 
-__version__ = "1.5.33"
+# -*- coding: utf-8 -*- 	
+__version__ = "1.5.34"
 """
 #[ver].[majer].[miner]
 #ver: 전체 프레임의 격변이 있을때
@@ -7,6 +8,9 @@ __version__ = "1.5.33"
 #miner:버그 수정및 작은 기능 추가.
 """
 __history__ = """
+* 1.5.34
+data ->neo_data 
+	
 * 1.5.33
 data ->neo_data 
 	
