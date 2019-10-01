@@ -8,11 +8,12 @@ from neolib.neoutil import input_multi_lines
 class UpdateInitAndCommit():
 	form_contents = '''
 {version_name} = "{__version__}"
+\'''
 #[ver].[majer].[miner]
 #ver: 전체 프레임의 격변이 있을때
 #majer:큰 기능 추가가 되었을때
 #miner:버그 수정및 작은 기능 추가.
-
+\'''
 {history_name} = """{__history__}"""
 	'''
 	version_name = "__version__"
