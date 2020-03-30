@@ -99,7 +99,7 @@ class UpdateInitAndCommit():
 
 if __name__ == '__main__':
 	msg = """
-NeoAltBytes 추가.
+NeoAltBytes 수정.
 	"""
 	#commmit("1.2.3",msg)
 	UpdateInitAndCommit().run(msg)

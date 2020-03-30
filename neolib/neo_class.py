@@ -412,7 +412,7 @@ class NeoAltBytes():
 		self.enc = enc
 		#self.conv = conv
 		self.conv = lambda a_:a_.lower() if conv == "lower" else a_.upper()
-		print(self.conv)
+		#print(self.conv)
 		#self.conv = lambda a_: a_.upper()
 
 	@property
