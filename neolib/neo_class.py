@@ -405,6 +405,32 @@ class NeoByteIO(io.BytesIO):
 
 
 
+class NeoAltBytes():
+	def __init__(self, org,sep="",enc='utf-8',conv='lower'):
+		self.org = tobytes(org)
+		self.sep = sep
+		self.enc = enc
+		#self.conv = conv
+		self.conv = lambda a_:a_.lower() if conv == "lower" else a_.upper()
+		print(self.conv)
+		#self.conv = lambda a_: a_.upper()
+
+	@property
+	def bytes(self):
+		return self.org
+
+	@property
+	def hexstr(self):
+		tohexstr(self.org)
+
+		return self.conv(tohexstr(self.org))
+
+	@property
+	def ascii(self):
+		return self.org.decode(encoding=self.enc)
+
+	def __str__(self):
+		return self.hexstr
 """
 from neolib import neo_class
 class SampleRunnable(neo_class.NeoRunnableClass):
@@ -424,4 +450,9 @@ if __name__ == "__main__":
 
 """
 if __name__ == '__main__':
+	inst = NeoAltBytes(b"\x31\x3f", conv='upper')
+	#inst = NeoAltBytes(b"\x31\x3f", conv='lower')
+
+	print(inst.hexstr)
+
 	pass
