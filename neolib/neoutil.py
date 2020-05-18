@@ -287,9 +287,15 @@ def create_logger(loggename,formatter = '%(threadName)s %(asctime)s - %(name)s -
 
 	return logger
 
-def json_pretty(json_obj,sort_keys=False):
+def json_pretty(json_obj,sort_keys=False,is_datetime_to_str=False,default=None):
+	def myconverter(o):
+			if isinstance(o, datetime.datetime):
+				return o.__str__()
 
-	return json.dumps(json_obj, sort_keys=sort_keys, indent=4, separators=(',', ': '),ensure_ascii=False)
+
+	if is_datetime_to_str:
+		default = myconverter
+	return json.dumps(json_obj, sort_keys=sort_keys, indent=4, separators=(',', ': '),ensure_ascii=False,default=default)
 
 def get_data_from_file(filename):
 	str = StrFromFile(filename)
