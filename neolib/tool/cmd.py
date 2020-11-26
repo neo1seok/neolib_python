@@ -10,13 +10,14 @@ def main(args:argparse.Namespace):
 def touch(args:argparse.Namespace):
 	fname = args.in_file
 
-	print(fname)
-	print(os.path.abspath(fname))
 
-	print(os.path.curdir)
-	print(os.getcwd())
+	#print(os.path.abspath(fname))
 
-	return
+	#print(os.path.curdir)
+	#print(os.getcwd())
+	fname = os.path.abspath(fname)
+	print('filename',fname)
+
 	if os.path.exists(fname):
 		os.utime(fname, None)
 	else:
