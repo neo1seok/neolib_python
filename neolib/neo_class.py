@@ -1,7 +1,7 @@
 
-
 import datetime
 import io
+import logging
 import os
 import queue
 import re
@@ -11,8 +11,10 @@ import threading
 import time
 from threading import Lock
 
-from neolib import core_util
 # from neolib import neoutil
+import paho.mqtt.client as mqtt
+
+from neolib import core_util, crypto_util_bin
 from neolib.hexstr_util import tobytes, tohexstr
 
 
@@ -447,6 +449,93 @@ if __name__ == "__main__":
 	pass
 
 """
+
+
+class MqttHandler(NeoRunnableClass):
+	def init(self):
+
+		self.option = self.map_args.get("option",{})
+		self.is_tls = self.map_args.get("is_tls",False)
+		self.host = self.map_args.get("host", 'localhost')
+		self.port = self.map_args.get("port", 1883)
+		self.log_name = self.map_args.get("log_name", 'log')
+		self.list_topics = self.map_args.get("list_topics", [])
+		self.client_id = self.map_args.get("client_id", None)
+		if self.client_id is None:
+			self.client_id ="cli_"+tohexstr(crypto_util_bin.getrandom(16))
+
+		self.on_cutom_message = self.map_args.get("on_message", None)
+		if not self.on_cutom_message:
+			self.on_cutom_message = lambda client, userdata, msg:print('#############',client, userdata, msg)
+
+		self.logger = logging.getLogger(self.log_name)
+		self.logger.info(f"cur class {self.__class__.__name__}")
+		#client_id = "cli_"+tohexstr(crypto_util_bin.getrandom(16))
+		self.client = mqtt.Client(client_id=self.client_id, protocol=mqtt.MQTTv31)
+		self.is_connected = False
+		pass
+
+	def init_run(self):
+
+		self.client.on_connect = self.on_connect
+		self.client.on_message = self.on_message
+		self.client.on_disconnect = self.on_disconnect
+
+		if self.is_tls:
+			self.logger.debug(f"tls_set {self.option}")
+			self.client.tls_set(**self.option)
+			self.client.tls_insecure_set(True)
+		self.logger.info(f"connecting  {self.host} {self.port} is_tls: {self.is_tls}")
+		self.client.connect(self.host, self.port, 60)
+	def do_run(self):
+		pass
+
+	def on_connect(self,client, userdata, flags, rc):
+		self.logger.info(f"Connected with result code {client} {self.host} {self.port}  " + str(rc))
+
+		# Subscribing in on_connect() means that if we lose the connection and
+		# reconnect then subscriptions will be renewed.
+		# client.subscribe("$SYS/#")
+		for sub in self.list_topics:
+			client.subscribe(sub)
+			self.logger.info(f"subscribed :{sub}")
+		self.is_connected = True
+		# client.subscribe(mqtt_topic_detail)
+		# client.subscribe(mqtt_sample)
+		# client.subscribe(onem2m_topic)
+		# client.subscribe(onem2m_topic_res)
+
+	def on_disconnect(self,client, userdata, rc):
+		self.logger.info(f"on_disconnect with result code {client}  {userdata} {rc}")
+		self.client.disconnect()
+
+
+	def on_message(self,client, userdata, msg):
+		# print(msg.topic + " ########" + msg.payload.decode())
+		self.logger.info(f"SUBS####:topic:{msg.topic} messge:{msg.payload.decode()}")
+		if msg.topic in self.list_topics:
+			#print(msg.topic + " ########" + msg.payload.decode())
+			#self.logger.info(f"SUBS####:topic:{msg.topic} messge:{msg.payload.decode()}")
+			self.on_cutom_message(client, userdata, msg)
+
+	def publish(self,topic,messge):
+
+		self.logger.info(f"PUB####:topic:{topic} messge:{messge}")
+		self.client.publish(topic, messge)
+
+	def loop_forever(self):
+		self.client.loop_forever()
+	# client.publish("paho/fuck3", "echo:"+msg.payload.decode())
+# elif msg.topic == mqtt_topic_detail:
+# 	print(msg.topic+" ########"+msg.payload.decode())
+# 	logger.info(f"payload:{msg.payload.decode()}")
+# elif msg.topic == mqtt_sample:
+# 	print(msg.topic + " ########" + msg.payload.decode())
+# 	logger.info(f"payload:{msg.payload.decode()}")
+# elif msg.topic == onem2m_topic_res:
+
+
+
 if __name__ == '__main__':
 	inst = NeoAltBytes(b"\x31\x3f", conv='upper')
 	#inst = NeoAltBytes(b"\x31\x3f", conv='lower')

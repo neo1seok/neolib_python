@@ -8,6 +8,24 @@ __version__ = "1.6.2"
 """
 __history__ = """
 * 1.6.2
+cmd touch 추가 .
+	
+* 1.7.0
+cmd touch 추가 .
+	
+* 1.6.6
+cmd 추가.
+	
+* 1.6.5
+json pretty 수정
+	
+* 1.6.4
+json pretty 수정
+	
+* 1.6.3
+MqttHandler 추가.
+	
+* 1.6.2
 NeoAltBytes 수정.
 	
 * 1.6.1
