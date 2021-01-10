@@ -1,16 +1,14 @@
 import unittest
 
-
 import Crypto.Util.Counter
 from Crypto.Cipher import AES
 from Crypto.Util.number import bytes_to_long
 
+from neolib import crypto_util_bin
 from neolib.crypto.aes import BlockCipherAES
 from neolib.crypto.block_cipher import BlockCipherMode
-
 from neolib.hexstr_util import tobytes, tohexstr
-from neolib import crypto_util_bin
-#from study_test.crypto.block_cipher import BlockCipherAES
+# from study_test.crypto.block_cipher import BlockCipherAES
 from sample.crypto.aes_gcm_ref import AES_GCM, InvalidTagException
 
 

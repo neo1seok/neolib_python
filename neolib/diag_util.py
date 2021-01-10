@@ -1,7 +1,9 @@
-from neolib import neoutil,neo_class
-from neolib import  xlrd_util,neoutil
 import collections
 import re
+
+from neolib import xlrd_util, neoutil
+
+
 def make_map_uids(srcxlsfile ,table_list_tab_name):
 	lines = xlrd_util.get_lines_from_xls_by_index(srcxlsfile, 0, lambda lines :[list(line[1:]) for line in lines[3:]])
 	lines = xlrd_util.fill_emptycell_from_prevrowcell(lines ,0)

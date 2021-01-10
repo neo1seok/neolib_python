@@ -1,5 +1,8 @@
-import ctypes,os,sys
-from comm.open_ssl_define import *
+import ctypes
+import os
+import sys
+
+
 #print(os.path.abspath("libeay32.dll"))
 def find_dll():
 	for tmp in sys.path:

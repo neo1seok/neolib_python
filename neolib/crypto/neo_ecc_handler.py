@@ -1,11 +1,11 @@
-from neolib import neoutil,neo_class,crypto_util,crypto_util_bin
-from neolib.neoutil import tobytes,tohexstr
+from comm.open_ssl_define import *
 
-from  comm.open_ssl_define import *
-#try:
+from neolib import neoutil, crypto_util
+# try:
 from neolib.crypto.load_open_ssl import *
-from neolib.crypto import load_open_ssl
-from _ctypes import PyObj_FromPtr
+from neolib.neoutil import tobytes, tohexstr
+
+
 #except:
 #	pass
 
@@ -13,8 +13,6 @@ from _ctypes import PyObj_FromPtr
 class NeoEccHandler():
 	def __init__(self,nid=NID_X9_62_prime256v1):
 
-		from comm import load_open_ssl
-		from _ctypes import PyObj_FromPtr
 		loading_ssl_functions(globals())
 
 		self.g_ecc_group = EC_GROUP_new_by_curve_name(nid)

@@ -2,14 +2,11 @@
 # -*- coding: utf-8 -*-
 
 
-from sys import version_info
-
 from base64 import b64encode, b64decode
 from binascii import hexlify, unhexlify
+from sys import version_info
 
 from neolib.hexstr_util import tobytes, tohexstr
-
-
 
 __all__ = ['encrypt_ecb', 'decrypt_ecb',
 		   'encrypt_cbc', 'decrypt_cbc',

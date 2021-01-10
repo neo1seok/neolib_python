@@ -1,9 +1,10 @@
-from neolib import neoutil,neo_class
+#import neolib
 import hashlib
+# import neolib
+import random
+
 import neolib.neoutil as neolib
 
-#import neolib
-import random
 
 def sha256(hexstr_input):
 	m = hashlib.sha256()

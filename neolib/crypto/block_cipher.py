@@ -2,10 +2,10 @@ from enum import Enum
 
 from Crypto.Cipher import AES
 
-from neolib.crypto_util_bin import *
-
-from neolib.hexstr_util import *
 from neolib import neoutil
+from neolib.crypto_util_bin import *
+from neolib.hexstr_util import *
+
 
 class BlockCipherMode(Enum):
 	ECB =0

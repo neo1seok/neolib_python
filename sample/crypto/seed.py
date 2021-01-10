@@ -1,4 +1,3 @@
-from neolib import neoutil,neo_class
 #from calc_crypto.util import *
 from neolib.crypto_util_bin import *
 

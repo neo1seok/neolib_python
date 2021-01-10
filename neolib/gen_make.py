@@ -1,8 +1,11 @@
+import collections
+import json
+import os
 import re
-from neolib import neoutil,file_util
-import jinja2
+
 from jinja2 import Environment
-import sys,os,collections,json
+
+from neolib import neoutil, file_util
 
 
 def plain_text_to_list(plain_text):

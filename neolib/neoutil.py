@@ -1,14 +1,22 @@
 
 
-import types
-# import xlrd
-import subprocess
+import datetime
+import json
 import logging
 # import sys
-#fdsdfasf
+# fdsdfasf
 # import collections
-import os
 import re
+# import xlrd
+import subprocess
+import types
+from datetime import datetime
+from logging import handlers
+
+from neolib.core_util import *
+from neolib.file_util import *
+
+
 # import  shutil
 # import time
 #
@@ -16,17 +24,6 @@ import re
 # import  json
 #
 # import xlrd
-
-import array
-import json
-import sys
-import datetime
-
-from neolib.hexstr_util import *
-from logging import handlers
-from neolib.file_util import *
-from neolib.core_util import *
-from datetime import datetime
 #from neolib.general_import import *
 
 
@@ -199,7 +196,6 @@ def get_safe_mapvalue(maparg,key,defvalue=''):
 	return defvalue
 
 def _linux_set_time(time_tuple):
-	import ctypes
 	import ctypes.util
 	import time
 

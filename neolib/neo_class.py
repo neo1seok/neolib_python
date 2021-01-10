@@ -1,22 +1,20 @@
 
 
-import queue
-import threading
-from threading import Lock
 import datetime
-import os,io
-
-import shutil
-import  time
-import sys
+import io
+import os
+import queue
 import re
-
-
-
-#from neolib import neoutil
-from neolib.hexstr_util import tobytes, tohexstr
+import shutil
+import sys
+import threading
+import time
+from threading import Lock
 
 from neolib import core_util
+# from neolib import neoutil
+from neolib.hexstr_util import tobytes, tohexstr
+
 
 def move_exist_file(filename):
 	if os.path.isfile(filename):

@@ -22,7 +22,7 @@ setup(
 	author_email = 'neo1seok@gmail.com',
 	keywords = ['neolib', 'neo1seok'],
 	install_requires=[
-			'xlrd','pandas'
+			#'xlrd','pandas'
 
     ],
 	#data_files=[('DLLs\\test',["lib\\win32\\libeay32.dll"])],

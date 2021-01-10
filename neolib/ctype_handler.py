@@ -1,10 +1,8 @@
-import collections
 import ctypes
-from ctypes import *
-from _ctypes import resize, sizeof
-from ctypes import *
+import enum
+import os
+import sys
 
-import sys,os,enum
 
 class CALLTYPE(enum.Enum):
 	stdcall=0

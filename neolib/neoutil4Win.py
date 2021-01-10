@@ -1,10 +1,10 @@
+import datetime
+
+import win32api
 import win32clipboard
 import win32process
-import win32api
-import neolib.neoutil as neolib
-import sys
-import datetime
-from neolib import neo_class,neoutil
+
+from neolib import neo_class
 
 
 def GetClipBoard():
@@ -45,7 +45,7 @@ def KillProcessFromHandle( hwnd):
 
 
 def get_utc_time(curlocal,native):
-	import pytz, datetime
+	import pytz
 	local = pytz.timezone(curlocal)
 	local_dt = local.localize(native, is_dst=None)
 	utc_dt = local_dt.astimezone(pytz.utc)

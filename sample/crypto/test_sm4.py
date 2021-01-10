@@ -1,13 +1,11 @@
 import unittest
-
-from neolib import neoutil
-from neolib.crypto.block_cipher import BlockCipherMode
-from neolib.crypto.sm4 import BlockCipherSM4
-from neolib.hexstr_util import tobytes, tohexstr
-
-#from study_test.crypto.neo_sm4 import BlockCipherSM4
+# from study_test.crypto.neo_sm4 import BlockCipherSM4
 from base64 import b64encode, b64decode
 
+from neolib.crypto.sm4 import BlockCipherSM4
+
+from neolib.crypto.block_cipher import BlockCipherMode
+from neolib.hexstr_util import tobytes, tohexstr
 from sample.crypto import sm4_ref
 
 

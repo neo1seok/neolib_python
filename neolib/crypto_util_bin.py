@@ -1,5 +1,3 @@
-from neolib import neoutil,neo_class
-from neolib.neoutil import *
 import hashlib
 import random
 

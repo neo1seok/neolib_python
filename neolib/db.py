@@ -1,20 +1,18 @@
 import collections
-import os
+import json
 import re
-import  shutil
+# from  threading import *
+import sqlite3
+import threading
 import time
 from typing import List
 
 import pymysql
-import  json
+import xlrd
 
 import neolib.neoutil as neolib
-from neolib import neoutil,neo_class
-import xlrd
-import threading
-#from  threading import *
-from neolib import xlrd_util
-import sqlite3
+from neolib import neoutil, neo_class
+
 
 def makeMapMapDBFromListMapDB(key,listMapDB):
 	return collections.OrderedDict([(tmprow[key],tmprow ) for tmprow in listMapDB])
