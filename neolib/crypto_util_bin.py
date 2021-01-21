@@ -1,6 +1,9 @@
 import hashlib
 import random
 
+from neolib.hexstr_util import tobytes, ByteArray2HexString
+
+
 def fit_size(src,unit_size):
 	real_size = len(src)
 	if real_size < unit_size:

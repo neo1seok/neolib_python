@@ -99,7 +99,7 @@ class UpdateInitAndCommit():
 
 if __name__ == '__main__':
 	msg = """
-cmd touch 추가 .
+일부 문제 수정
 	"""
 	#commmit("1.2.3",msg)
 	UpdateInitAndCommit().run(msg)
