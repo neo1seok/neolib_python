@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*- 	
-__version__ = "1.7.2"
+__version__ = "1.7.3"
 """
 #[ver].[majer].[miner]
 #ver: 전체 프레임의 격변이 있을때
@@ -7,6 +7,9 @@ __version__ = "1.7.2"
 #miner:버그 수정및 작은 기능 추가.
 """
 __history__ = """
+* 1.7.3
+crypto -> cryptodome
+	
 * 1.7.2
 일부 문제 수정
 	

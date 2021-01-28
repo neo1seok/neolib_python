@@ -1,6 +1,6 @@
 from enum import Enum
 
-from Crypto.Cipher import AES
+from Cryptodome.Cipher import AES
 
 from neolib import neoutil
 from neolib.crypto_util_bin import *
@@ -175,13 +175,14 @@ if __name__ == '__main__':
 
 
 
-	s = SampleAES(key)
-	enc = s.CBC_enc(msg,iv)
-	dec = s.CBC_dec(enc, iv)
+	s = SampleAES(key,iv)
+
+	enc = s.CBC_enc(msg)
+	dec = s.CBC_dec(enc)
 
 	print(tohexstr(enc), tohexstr(dec))
 
-	s = SampleAES(key)
+	s = SampleAES(key,iv)
 
 	enc = s.ECB_enc (msg)
 	dec = s.ECB_dec(enc)

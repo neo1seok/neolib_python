@@ -99,7 +99,7 @@ class UpdateInitAndCommit():
 
 if __name__ == '__main__':
 	msg = """
-일부 문제 수정
+crypto -> cryptodome
 	"""
 	#commmit("1.2.3",msg)
 	UpdateInitAndCommit().run(msg)
